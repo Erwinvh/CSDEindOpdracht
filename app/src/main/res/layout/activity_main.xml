@@ -8,48 +8,61 @@
 
     <FrameLayout
         android:id="@+id/fragmentcontainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/fragment_container"
+        app:layout_constraintBottom_toTopOf="@id/menu_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menu_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="80dp"
+        android:layout_height="wrap_content"
+        android:background="@color/bright_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
-    </FrameLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_character"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/button_margins"
+            android:clickable="true"
+            android:contentDescription="@string/character_button"
+            android:padding="@dimen/button_margins"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/characterbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_training"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/button_margins"
+            android:clickable="true"
+            android:contentDescription="@string/training_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/Trainingbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/RaceButton"
-        app:layout_constraintStart_toEndOf="@+id/characterbutton"
-        app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_race"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/button_margins"
+            android:clickable="true"
+            android:contentDescription="@string/race_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_myplaces" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/RaceButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_myplaces" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

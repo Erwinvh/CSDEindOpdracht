@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/avatar_image"
+        android:width="@dimen/avatar_width"
+        android:height="@dimen/avatar_height"
+        android:drawable="@drawable/runner"
+        android:gravity="center" />
+
+    <item android:id="@+id/avatar_frame">
+        <shape>
+            <size
+                android:width="@dimen/avatar_width"
+                android:height="@dimen/avatar_height" />
+            <stroke
+                android:width="@dimen/avatar_stroke_thickness"
+                android:color="@color/bright_blue" />
+            <corners android:radius="@dimen/avatar_corner_radius" />
+        </shape>
+    </item>
+
+</layer-list>

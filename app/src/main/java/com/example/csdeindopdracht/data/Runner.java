@@ -5,7 +5,7 @@ public class Runner {
     public String playerName;
     public int stamina;
     public int speed;
-    public int maxSpeed;
+    public int topSpeed;
 
 
 
@@ -13,17 +13,17 @@ public class Runner {
 
         //TODO: remove testCode{
         playerName = "test";
-        stamina = 10;
-        speed = 20;
-        maxSpeed = 40;
+        stamina = 65;
+        speed = 100;
+        topSpeed = 90;
         //TODO: }
 
 
 
     }
 
-    public int getMaxSpeed() {
-        return maxSpeed;
+    public int getTopSpeed() {
+        return topSpeed;
     }
 
     public int getSpeed() {
