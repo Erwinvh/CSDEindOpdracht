@@ -1,28 +1,32 @@
 package com.example.csdeindopdracht.Database.Entity;
 
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 /**
  * Room entity which describes a Race.
  */
-@Entity(tableName = "Race")
+@Entity(tableName = "Race", indices = {@Index("id"), @Index(value = {"IsComplete"})})
 public class Race {
 
     @NonNull
     @PrimaryKey
-    private String RaceName;
+    private final String id;
 
-    @NonNull
-    @ColumnInfo(name = "isComplete")
+    @ColumnInfo(name = "IsComplete")
     private boolean isComplete;
 
+    public Race(@NonNull String id, boolean isComplete) {
+        this.id = id;
+        this.isComplete = isComplete;
+    }
+
     @NonNull
-    public String getRaceName() {
-        return RaceName;
+    public String getId() {
+        return id;
     }
 
     public boolean isComplete() {

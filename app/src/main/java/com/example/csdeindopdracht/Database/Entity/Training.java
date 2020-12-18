@@ -4,46 +4,56 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 /**
  * Room entity which describes a training.
  */
-@Entity(tableName = "Training")
+@Entity(tableName = "Training", indices = {@Index("dateTime"), @Index(value = {"Time"})})
 public class Training {
 
     @NonNull
     @PrimaryKey
-    private String DateTime;
+    private String dateTime;
 
     @NonNull
     @ColumnInfo(name = "Time")
-    private String Time;
+    private String time;
 
-    @NonNull
-    @ForeignKey(Statistic.statID)
-    @ColumnInfo(name = "StatID")
-    private double StatID;
+    @ForeignKey(entity = Statistic.class, parentColumns = "ID", childColumns = "Statistic_ID", onDelete = ForeignKey.CASCADE)
+    @ColumnInfo(name = "Statistic_ID")
+    private int statisticID;
 
-    public double getStatID() {
-        return StatID;
+    public Training(@NonNull String dateTime, @NonNull String time, int statisticID) {
+        this.dateTime = dateTime;
+        this.time = time;
+        this.statisticID = statisticID;
     }
 
     @NonNull
     public String getDateTime() {
-        return DateTime;
+        return dateTime;
     }
 
     @NonNull
     public String getTime() {
-        return Time;
+        return time;
+    }
+
+    public int getStatisticID() {
+        return statisticID;
     }
 
     public void setDateTime(@NonNull String dateTime) {
-        DateTime = dateTime;
+        this.dateTime = dateTime;
     }
 
     public void setTime(@NonNull String time) {
-        Time = time;
+        this.time = time;
+    }
+
+    public void setStatisticID(int statisticID) {
+        this.statisticID = statisticID;
     }
 }

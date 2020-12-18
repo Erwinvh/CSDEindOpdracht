@@ -3,27 +3,36 @@ package com.example.csdeindopdracht.Database.Entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 /**
  * Room entity which describes the user settings.
  */
-@Entity(tableName = "UserSetting")
+@Entity(tableName = "UserSetting", indices = {@Index("settingID"), @Index(value = {"Difficulty", "Language"})})
 public class UserSettings {
-
 
     @NonNull
     @PrimaryKey
-    private String SettingID;
+    private final String settingID;
 
-    @NonNull
     @ColumnInfo(name = "Difficulty")
     private int difficulty;
 
     @NonNull
     @ColumnInfo(name = "Language")
-    private String Language;
+    private String language;
 
+    public UserSettings(@NonNull String settingID, int difficulty, @NonNull String language) {
+        this.settingID = settingID;
+        this.difficulty = difficulty;
+        this.language = language;
+    }
+
+    @NonNull
+    public String getSettingID() {
+        return settingID;
+    }
 
     public int getDifficulty() {
         return difficulty;
@@ -31,12 +40,7 @@ public class UserSettings {
 
     @NonNull
     public String getLanguage() {
-        return Language;
-    }
-
-    @NonNull
-    public String getSettingID() {
-        return SettingID;
+        return language;
     }
 
     public void setDifficulty(int difficulty) {
@@ -44,6 +48,6 @@ public class UserSettings {
     }
 
     public void setLanguage(@NonNull String language) {
-        Language = language;
+        this.language = language;
     }
 }

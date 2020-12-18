@@ -1,59 +1,60 @@
 package com.example.csdeindopdracht.Database.Entity;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 /**
  * Room entity which describes a statistic.
  */
-@Entity(tableName = "Statistic")
+@Entity(tableName = "statistic", indices = {@Index("id"), @Index(value = {"TopSpeed", "GeneralSpeed"})})
 public class Statistic {
 
-
-    @NonNull
     @PrimaryKey
-    private int statID;
+    private final int id;
 
-    @NonNull
     @ColumnInfo(name = "TopSpeed")
-    private double TopSpeed;
+    private double topSpeed;
 
-    @NonNull
     @ColumnInfo(name = "GeneralSpeed")
-    private double GeneralSpeed;
+    private double generalSpeed;
 
-    @NonNull
     @ColumnInfo(name = "RunDistance")
-    private double RunDistance;
+    private double runDistance;
 
+    public Statistic(int id, double topSpeed, double generalSpeed, double runDistance) {
+        this.id = id;
+        this.topSpeed = topSpeed;
+        this.generalSpeed = generalSpeed;
+        this.runDistance = runDistance;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public double getGeneralSpeed() {
-        return GeneralSpeed;
+        return generalSpeed;
     }
 
     public double getRunDistance() {
-        return RunDistance;
+        return runDistance;
     }
 
     public double getTopSpeed() {
-        return TopSpeed;
-    }
-
-    public int getStatID() {
-        return statID;
-    }
-
-    public void setGeneralSpeed(double generalSpeed) {
-        GeneralSpeed = generalSpeed;
-    }
-
-    public void setRunDistance(double runDistance) {
-        RunDistance = runDistance;
+        return topSpeed;
     }
 
     public void setTopSpeed(double topSpeed) {
-        TopSpeed = topSpeed;
+        this.topSpeed = topSpeed;
+    }
+
+    public void setGeneralSpeed(double generalSpeed) {
+        this.generalSpeed = generalSpeed;
+    }
+
+    public void setRunDistance(double runDistance) {
+        this.runDistance = runDistance;
     }
 }
