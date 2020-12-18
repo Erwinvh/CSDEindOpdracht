@@ -4,9 +4,9 @@ package com.example.csdeindopdracht.Logic;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -14,24 +14,24 @@ import java.util.Locale;
  *
  * Manages all Live Data and serves as a connector class between the front and backend.
  */
-public class MainViewModel {
+public class MainViewModel extends AndroidViewModel {
 
     private static final Locale LOCALE_DEFAULT = new Locale("nl");
-    private final MutableLiveData<UserSettings> userSettings = new MutableLiveData<>();
-    private final MutableLiveData<GpsCoordinate> gpsCoordinate = new MutableLiveData<>();
+    private final MutableLiveData<UserSetting> userSettings = new MutableLiveData<>();
+    //private final MutableLiveData<GpsCoordinate> gpsCoordinate = new MutableLiveData<>();
 
     public MainViewModel(@NonNull Application application) {
         super(application);
     }
 
-    public MutableLiveData<UserSettings> getUserSettings() {
-        this.userSettings.postValue(Repository.getInstance().getUserSettings(getApplication().getApplicationContext()));
+    public MutableLiveData<UserSetting> getUserSetting() {
+        this.userSettings.postValue(Repository.getInstance().getUserSetting(getApplication().getApplicationContext()));
         return userSettings;
     }
 
-    public MutableLiveData<GpsCoordinate> getGpsCoordinate() {
-        this.gpsCoordinate.postValue(Repository.getInstance().getGpsCoordinate());
-        return gpsCoordinate;
-    }
+//    public MutableLiveData<GpsCoordinate> getGpsCoordinate() {
+//        this.gpsCoordinate.postValue(Repository.getInstance().getGpsCoordinate());
+//        return gpsCoordinate;
+//    }
 
 }
