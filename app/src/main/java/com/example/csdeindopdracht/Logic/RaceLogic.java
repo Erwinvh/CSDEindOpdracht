@@ -1,5 +1,8 @@
 package com.example.csdeindopdracht.Logic;
 
+import com.example.csdeindopdracht.Database.Entity.Runner;
+import com.example.csdeindopdracht.Database.Relations.RunnerStatistics;
+
 public class RaceLogic {
 
     public boolean isPlayerBoosted = false;
@@ -47,24 +50,29 @@ public class RaceLogic {
 
     public void CrossedFinishLine() {
         //TODO: finish
-        //if (FinishLinereached == Runner.isPlayer){
-        //  victory!
-        //  Race.setIsComplete(true);
-        //}else if(FinishLineReached == Runner.isPlayer){
-        //  Lose!
-        //}else{
-        //  nothing
-        //}
+//        if (FinishLinereached == Runner.isPlayer){
+//          victory!
+//          Race.setIsComplete(true);
+//        }else if(FinishLineReached == Runner.isPlayer){
+//          Lose!
+//          ForfeitRace()
+//        }else{
+//          nothing
+//        }
     }
 
-    public void UseSprintButton(Runner runner){
-        if (playerBoostedAmount<runner.getStats().getRunDistance()){
+    public void UseSprintButton(RunnerStatistics runner){
+        if (playerBoostedAmount<runner.getStatistic().getRunDistance()){
             isPlayerBoosted = true;
             playerBoostedAmount++;
         }
     }
 
     public void ForfeitRace(){
-        //TODO: finish
+        isPlayerBoosted = false;
+        playerboostCounter = 0;
+        isOponentBoosted = false;
+        oponentboostCounter = 0;
+        playerBoostedAmount = 0;
     }
 }
