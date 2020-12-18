@@ -18,6 +18,7 @@ import java.util.List;
 public class Repository {
 
     private static volatile Repository INSTANCE;
+    private final String UserSettingsID = "0";
 
     public static Repository getInstance() {
         if (INSTANCE == null) {
@@ -33,7 +34,7 @@ public class Repository {
     }
 
     public UserSettings getUserSetting(Context context){
-        return Database.getINSTANCE(context).userAccess().getUserSettings("");
+        return Database.getINSTANCE(context).userAccess().getUserSettings(this.UserSettingsID);
         //TODO: What settingsID? shouldnt that be a standard return?
     }
 
@@ -64,7 +65,7 @@ public class Repository {
 
     public void setLanguage(Context context, String language){
         //TODO: check this?
-        UserSettings userSettings = Database.getINSTANCE(context).userAccess().getUserSettings("");
+        UserSettings userSettings = Database.getINSTANCE(context).userAccess().getUserSettings(this.UserSettingsID);
         userSettings.setLanguage(language);
         Database.getINSTANCE(context).adminAccess().updateUserSettings(userSettings);
     }
@@ -77,7 +78,7 @@ public class Repository {
 
     public void setDifficulty(Context context, int difficulty){
         //TODO: check this?
-        UserSettings userSettings = Database.getINSTANCE(context).userAccess().getUserSettings("");
+        UserSettings userSettings = Database.getINSTANCE(context).userAccess().getUserSettings(this.UserSettingsID);
         userSettings.setDifficulty(difficulty);
         Database.getINSTANCE(context).adminAccess().updateUserSettings(userSettings);
     }
@@ -96,6 +97,6 @@ public class Repository {
     }
 
     public int getDifficulty(Context context){
-        return Database.getINSTANCE(context).userAccess().getUserSettings("").getDifficulty();
+        return Database.getINSTANCE(context).userAccess().getUserSettings(this.UserSettingsID).getDifficulty();
     }
 }
