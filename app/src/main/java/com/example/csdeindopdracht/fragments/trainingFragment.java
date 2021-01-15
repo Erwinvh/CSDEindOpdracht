@@ -14,17 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.csdeindopdracht.Logic.MainViewModel;
+import com.example.csdeindopdracht.Logic.TrainingLogic;
 import com.example.csdeindopdracht.R;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.library.BuildConfig;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.security.Timestamp;
 import java.util.ArrayList;
 
 
@@ -37,6 +40,16 @@ public class trainingFragment extends Fragment {
     private Context context;
     private final int ZOOM_LEVEL = 19;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+
+    //training related
+    private TrainingLogic traininglogic = new TrainingLogic();
+    private Timestamp startTime;
+    private Timestamp currentTime;
+    private Timestamp endTime;
+    private GeoPoint beginGeoPoint;
+    private GeoPoint endGeoPoint;
+    private ArrayList<GeoPoint> BetweenPointsList = new ArrayList<>();
+    private ArrayList<Timestamp> timesBetweenPoints = new ArrayList<>();
 
     public trainingFragment() {
         // Required empty public constructor
