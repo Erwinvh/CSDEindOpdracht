@@ -12,9 +12,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.csdeindopdracht.Logic.MainViewModel;
+import com.example.csdeindopdracht.MainActivity;
 import com.example.csdeindopdracht.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.library.BuildConfig;
@@ -37,6 +40,8 @@ public class raceFragment extends Fragment {
     private Context context;
     private final int ZOOM_LEVEL = 19;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+
+    private FloatingActionButton SprintButton;
 
     public raceFragment() {
         // Required empty public constructor
@@ -70,6 +75,10 @@ public class raceFragment extends Fragment {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         }, REQUEST_PERMISSIONS_REQUEST_CODE);
+
+
+
+
     }
 
     @Override
@@ -117,7 +126,18 @@ public class raceFragment extends Fragment {
 
 
 
+        SprintButton = view.findViewById(R.id.sprint_button);
+        SprintButton.setOnClickListener(v -> {
+            //TODO: fit sprint mechanic in to button
 
+
+
+
+            //TODO: remove testcode
+            Toast.makeText(getActivity(), "TODO: implement sprint function",
+                    Toast.LENGTH_LONG).show();
+
+        });
     }
 
     public MyLocationNewOverlay getLocationOverlay() {
