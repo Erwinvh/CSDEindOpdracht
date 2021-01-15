@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">CSDEindopdracht</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="fragment_container">Fragment container</string>
+    <string name="character_button">Go to character</string>
+    <string name="training_button">Train yourself</string>
+    <string name="race_button">Race a bot</string>
+
+    <!-- Character fragment -->
+    <string name="character_title">Character</string>
+    <string name="stamina">Stamina</string>
+    <string name="speed">Speed</string>
+    <string name="top_speed">Top speed</string>
+    <string name="avatar">Avatar</string>
+    <string name="dutch_flag">Nederlands</string>
+    <string name="british_flag">English</string>
 </resources>

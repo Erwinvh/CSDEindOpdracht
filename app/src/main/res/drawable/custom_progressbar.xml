@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Define the progress properties like start color, end color etc -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <size
+                    android:width="@dimen/progressbar_width"
+                    android:height="@dimen/progressbar_height" />
+                <corners android:radius="@dimen/progressbar_corner_radius" />
+                <gradient
+                    android:angle="0"
+                    android:centerColor="@color/light_blue"
+                    android:centerX="0.5"
+                    android:endColor="@color/selected"
+                    android:gradientRadius="10dp"
+                    android:startColor="@color/light_blue" />
+            </shape>
+        </clip>
+    </item>
+
+    <!-- Define the background properties like color etc -->
+    <item android:id="@android:id/background">
+        <shape>
+            <size
+                android:width="@dimen/progressbar_width"
+                android:height="@dimen/progressbar_height" />
+            <stroke
+                android:width="@dimen/progressbar_stroke_thickness"
+                android:color="@color/bright_blue" />
+            <corners android:radius="@dimen/progressbar_corner_radius" />
+        </shape>
+    </item>
+
+
+</layer-list>

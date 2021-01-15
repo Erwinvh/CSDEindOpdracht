@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.CharacterFragment">
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/character_title"
+        android:textColor="@color/dark_text"
+        android:textSize="@dimen/text_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.04000002" />
+
+    <ProgressBar
+        android:id="@+id/stamina_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="@dimen/progressbar_width"
+        android:layout_height="@dimen/progressbar_height"
+        android:progressDrawable="@drawable/custom_progressbar"
+        app:layout_constraintBottom_toBottomOf="@+id/stamina"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/stamina" />
+
+    <ProgressBar
+        android:id="@+id/speed_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="@dimen/progressbar_width"
+        android:layout_height="@dimen/progressbar_height"
+        android:progressDrawable="@drawable/custom_progressbar"
+        app:layout_constraintBottom_toBottomOf="@+id/speed"
+        app:layout_constraintStart_toStartOf="@id/stamina_bar"
+        app:layout_constraintTop_toTopOf="@+id/speed" />
+
+    <ProgressBar
+        android:id="@+id/top_speed_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="@dimen/progressbar_width"
+        android:layout_height="@dimen/progressbar_height"
+        android:progressDrawable="@drawable/custom_progressbar"
+        app:layout_constraintBottom_toBottomOf="@+id/top_speed"
+        app:layout_constraintStart_toStartOf="@id/speed_bar"
+        app:layout_constraintTop_toTopOf="@+id/top_speed" />
+
+    <TextView
+        android:id="@+id/stamina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/stamina"
+        android:textColor="@color/dark_text"
+        android:textSize="@dimen/text_stats"
+        app:layout_constraintEnd_toStartOf="@+id/stamina_bar"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <TextView
+        android:id="@+id/speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/speed"
+        android:textColor="@color/dark_text"
+        android:textSize="@dimen/text_stats"
+        app:layout_constraintEnd_toStartOf="@+id/speed_bar"
+        app:layout_constraintTop_toBottomOf="@+id/stamina" />
+
+    <TextView
+        android:id="@+id/top_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/top_speed"
+        android:textColor="@color/dark_text"
+        android:textSize="@dimen/text_stats"
+        app:layout_constraintEnd_toStartOf="@+id/top_speed_bar"
+        app:layout_constraintTop_toBottomOf="@+id/speed" />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/avatar_width"
+        android:layout_height="@dimen/avatar_height"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_avatar"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/avatar"
+        app:layout_constraintEnd_toEndOf="@id/top_speed_bar"
+        app:layout_constraintStart_toStartOf="@id/top_speed_bar"
+        app:layout_constraintTop_toBottomOf="@+id/top_speed_bar" />
+
+    <!-- TODO switch engels.png with english.svg -->
+    <ImageButton
+        android:id="@+id/english_flag"
+        android:layout_width="0dp"
+        android:background="@color/transparent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/british_flag"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toStartOf="@+id/avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/avatar"
+        tools:src="@drawable/engels" />
+
+    <!-- TODO switch nederlands.png with dutch.svg -->
+    <ImageButton
+        android:id="@+id/dutch_flag"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:adjustViewBounds="true"
+        android:background="@color/transparent"
+        android:contentDescription="@string/dutch_flag"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toStartOf="@+id/avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/english_flag"
+        tools:src="@drawable/nederlands" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

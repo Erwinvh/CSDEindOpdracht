@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Progression dimensions -->
+    <dimen name="progressbar_height">20dp</dimen>
+    <dimen name="progressbar_width">220dp</dimen>
+    <dimen name="progressbar_stroke_thickness">2dp</dimen>
+    <dimen name="progressbar_corner_radius">5dp</dimen>
+    
+    <!-- Text dimensions -->
+    <dimen name="text_title">28sp</dimen>
+    <dimen name="text_subtitle">22sp</dimen>
+    <dimen name="text_stats">20sp</dimen>
+
+    <!-- Avatar dimensions -->
+    <dimen name="avatar_height">@dimen/progressbar_width</dimen>
+    <dimen name="avatar_width">@dimen/progressbar_width</dimen>
+    <dimen name="avatar_stroke_thickness">2dp</dimen>
+    <dimen name="avatar_corner_radius">10dp</dimen>
+
+    <!-- Flag dimensions -->
+    <dimen name="flag_stroke_thickness">1dp</dimen>
+
+    <!-- Menu dimensions -->
+    <dimen name="button_margins">24dp</dimen>
+</resources>
