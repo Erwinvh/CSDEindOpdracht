@@ -2,6 +2,7 @@ package com.example.csdeindopdracht;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.example.csdeindopdracht.fragments.BaseMapFragment;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.fragmentcontainer, new CharacterFragment())
                         .commit();
                 currentFragment = Fragments.CHARACTER;
+                toCharacterButton.setImageResource(R.drawable.stop_foreground);
                 //TODO: change floatingbutton to globe
             }else{
                 //TODO: turn back to previous fragment or map fragment
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.fragmentcontainer, new BaseMapFragment())
                         .commit();
                 currentFragment = Fragments.BASE_MAP;
-                //TODO: return icon back to the original icon
+                toCharacterButton.setImageResource(R.drawable.ic_launcher_foreground);
             }
         });
 
@@ -48,17 +50,19 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton trainingButton = findViewById(R.id.button_training);
         trainingButton.setOnClickListener(v -> {
             if (!currentFragment.equals(Fragments.TRAINING)) {
+                //TODO: register previous fragment?
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentcontainer, new CharacterFragment()) // TODO change fragment
                         .commit();
                 currentFragment = Fragments.TRAINING;
+                trainingButton.setImageResource(R.drawable.stop_foreground);
             }else{
                 //TODO: turn back to previous fragment or map fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentcontainer, new BaseMapFragment())
                         .commit();
                 currentFragment = Fragments.BASE_MAP;
-                //TODO: return icon back to the original icon
+                trainingButton.setImageResource(R.drawable.training_foreground);
             }
         });
 
@@ -71,14 +75,16 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.fragmentcontainer, new CharacterFragment()) // TODO change fragment
                         .commit();
                 currentFragment = Fragments.RACE;
-                //TODO: change floatingbutton to stop
+                racingButton.setImageResource(R.drawable.stop_foreground);
+
             }else{
                 //TODO: turn back to previous fragment or map fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentcontainer, new BaseMapFragment())
                         .commit();
                 currentFragment = Fragments.BASE_MAP;
-                //TODO: return icon back to the original icon
+                //TODO: find right icon to replace current one
+                racingButton.setImageResource(R.drawable.race_foreground);
             }
 
         });
