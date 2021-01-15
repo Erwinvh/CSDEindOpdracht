@@ -15,7 +15,8 @@ public class MainActivity extends AppCompatActivity {
     private enum Fragments {
         BASE_MAP,
         CHARACTER,
-        TRAINING
+        TRAINING,
+        RACE
     }
 
     @Override
@@ -23,30 +24,63 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //left button
         FloatingActionButton toCharacterButton = findViewById(R.id.button_character);
         toCharacterButton.setOnClickListener(v -> {
-            if (currentFragment.equals(Fragments.BASE_MAP)) {
+            if (!currentFragment.equals(Fragments.CHARACTER)) {
+                //TODO: register previous fragment?
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentcontainer, new CharacterFragment())
                         .commit();
                 currentFragment = Fragments.CHARACTER;
+                //TODO: change floatingbutton to globe
+            }else{
+                //TODO: turn back to previous fragment or map fragment
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentcontainer, new BaseMapFragment())
+                        .commit();
+                currentFragment = Fragments.BASE_MAP;
+                //TODO: return icon back to the original icon
             }
         });
 
+        //Middle button
         FloatingActionButton trainingButton = findViewById(R.id.button_training);
         trainingButton.setOnClickListener(v -> {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentcontainer, new CharacterFragment()) // TODO change fragment
-                    .commit();
-            currentFragment = Fragments.CHARACTER;
+            if (!currentFragment.equals(Fragments.TRAINING)) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentcontainer, new CharacterFragment()) // TODO change fragment
+                        .commit();
+                currentFragment = Fragments.TRAINING;
+            }else{
+                //TODO: turn back to previous fragment or map fragment
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentcontainer, new BaseMapFragment())
+                        .commit();
+                currentFragment = Fragments.BASE_MAP;
+                //TODO: return icon back to the original icon
+            }
         });
 
+        //right button
         FloatingActionButton racingButton = findViewById(R.id.button_race);
         racingButton.setOnClickListener(v -> {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentcontainer, new CharacterFragment()) // TODO change fragment
-                    .commit();
-            currentFragment = Fragments.CHARACTER;
+            if (!currentFragment.equals(Fragments.RACE)){
+                //TODO: register previous fragment?
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentcontainer, new CharacterFragment()) // TODO change fragment
+                        .commit();
+                currentFragment = Fragments.RACE;
+                //TODO: change floatingbutton to stop
+            }else{
+                //TODO: turn back to previous fragment or map fragment
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentcontainer, new BaseMapFragment())
+                        .commit();
+                currentFragment = Fragments.BASE_MAP;
+                //TODO: return icon back to the original icon
+            }
+
         });
     }
 
