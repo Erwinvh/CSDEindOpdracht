@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import com.example.csdeindopdracht.Logic.MainViewModel;
 import com.example.csdeindopdracht.R;
 
+import org.osmdroid.config.Configuration;
+import org.osmdroid.library.BuildConfig;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapController;
@@ -38,6 +40,24 @@ public class BaseMapFragment extends Fragment {
 
     public BaseMapFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        this.mapView.onResume();
+        this.locationOverlay.onResume();
+
+        this.mapController.setCenter(locationOverlay.getMyLocation());
+        this.mapController.animateTo(locationOverlay.getMyLocation());
+        this.mapController.zoomTo(ZOOM_LEVEL);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        this.mapView.onPause();
+        this.locationOverlay.onPause();
     }
 
     @Override
@@ -92,7 +112,21 @@ public class BaseMapFragment extends Fragment {
         this.mapController.animateTo(locationOverlay.getMyLocation());
         this.mapController.zoomTo(ZOOM_LEVEL);
 
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
+
+
+
+    }
+
+    public MyLocationNewOverlay getLocationOverlay() {
+        return locationOverlay;
+    }
+
+    public void StopChecking(){
+//        if(gpsLogic != null){
+//            gpsLogic.stop();
+//        }
     }
 
 }
