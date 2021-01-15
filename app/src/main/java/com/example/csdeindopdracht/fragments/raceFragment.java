@@ -1,7 +1,9 @@
 package com.example.csdeindopdracht.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.csdeindopdracht.Logic.MainViewModel;
+import com.example.csdeindopdracht.Logic.RaceLogic;
 import com.example.csdeindopdracht.MainActivity;
 import com.example.csdeindopdracht.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,25 +25,41 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.library.BuildConfig;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class raceFragment extends Fragment {
 
+    //Map related
     private MapView mapView;
     private MapController mapController;
     private MyLocationNewOverlay locationOverlay;
+
+    //Info related
     private MainViewModel mainViewModel;
     private Context context;
+
+    //Race related
+    private RaceLogic raceLogic = new RaceLogic();
+    private GeoPoint beginGeoPoint;
+    private GeoPoint endGeoPoint;
+    private GeoPoint playerGeoPoint;
+    private GeoPoint OpponentGeoPoint;
+
     private final int ZOOM_LEVEL = 19;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
+    //UI related
     private FloatingActionButton SprintButton;
 
     public raceFragment() {
@@ -75,10 +94,6 @@ public class raceFragment extends Fragment {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         }, REQUEST_PERMISSIONS_REQUEST_CODE);
-
-
-
-
     }
 
     @Override
@@ -108,7 +123,6 @@ public class raceFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         super.onViewCreated(view, savedInstanceState);
-
         this.mapView = getActivity().findViewById(R.id.race_map);
         this.mapView.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
         this.mapView.setMultiTouchControls(true);
@@ -125,12 +139,23 @@ public class raceFragment extends Fragment {
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
 
+        //TODO: create all 4 items on the list
+
+
 
         SprintButton = view.findViewById(R.id.sprint_button);
         SprintButton.setOnClickListener(v -> {
             //TODO: fit sprint mechanic in to button
+            //raceLogic.UseSprintButton(null);
 
-
+            beginGeoPoint = new GeoPoint(locationOverlay.getMyLocation().getLatitude(), locationOverlay.getMyLocation().getLongitude());
+            playerGeoPoint = locationOverlay.getMyLocation();
+            OpponentGeoPoint = locationOverlay.getMyLocation();
+            DrawBeginPoint(beginGeoPoint);
+            Drawplayer(playerGeoPoint);
+            DrawOponent(OpponentGeoPoint);
+            endGeoPoint = CalculateEndPoint();
+            DrawEndPoint(endGeoPoint);
 
 
             //TODO: remove testcode
@@ -138,6 +163,28 @@ public class raceFragment extends Fragment {
                     Toast.LENGTH_LONG).show();
 
         });
+
+    }
+
+    private GeoPoint CalculateEndPoint() {
+        Random r = new Random();
+        int low = 10;
+        int high = 80;
+        double resultLat = (r.nextInt(high-low) + low)/10000.0;
+        double resultLong = (r.nextInt(high-low) + low)/10000.0;
+
+        double LongDoubleValue = Math.random();
+        int LongIntValue = (int) Math. round(LongDoubleValue);
+        double LatDoubleValue = Math.random();
+        int LatIntValue = (int) Math. round(LatDoubleValue);
+        if (LongIntValue == 0) {
+            resultLong = -resultLong;
+        }
+        if (LatIntValue == 0) {
+            resultLat = -resultLat;
+        }
+
+        return new GeoPoint(locationOverlay.getMyLocation().getLatitude()+resultLat, locationOverlay.getMyLocation().getLongitude()+resultLong);
     }
 
     public MyLocationNewOverlay getLocationOverlay() {
@@ -150,4 +197,74 @@ public class raceFragment extends Fragment {
 //        }
     }
 
+//    public int measureDistance(ArrayList<Coordinate> coordinates){
+//        int total = 0;
+//
+//        for (int i = 0; i<coordinates.size()-1;i++){
+//            GeoPoint geoPoint = new GeoPoint(coordinates.get(i).getLatitude(),coordinates.get(i).getLongitude());
+//            GeoPoint geoPoint2 = new GeoPoint(coordinates.get(i+1).getLatitude(),coordinates.get(i+1).getLongitude());
+//
+//            total = total + (int)(geoPoint.distanceToAsDouble(geoPoint2));
+//        }
+//
+//        return total;
+//
+//    }
+//
+//    public void DrawRoute(ArrayList<Coordinate> coordinates) {
+//        ArrayList<GeoPoint> geoPoints = new ArrayList<>();
+//        for (Coordinate coordinate : coordinates) {
+//            geoPoints.add(new GeoPoint(coordinate.getLatitude(), coordinate.getLongitude()));
+//        }
+//
+//        Polyline line = new Polyline();
+//        line.setPoints(geoPoints);
+//        mapView.getOverlayManager().add(line);
+//    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void DrawBeginPoint(GeoPoint geoPoint) {
+
+            Marker marker = new Marker(mapView);
+            marker.setTitle("BeginPoint");
+            marker.setPosition(geoPoint);
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+//            marker.setIcon(getResources().getDrawable(R.drawable.training_foreground, context.getTheme()));
+            mapView.getOverlays().add(marker);
+        }
+
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void DrawEndPoint(GeoPoint geoPoint) {
+
+        Marker marker = new Marker(mapView);
+        marker.setTitle("EndPoint");
+        marker.setPosition(geoPoint);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+//        marker.setIcon(getResources().getDrawable(R.drawable.race_foreground, context.getTheme()));
+        mapView.getOverlays().add(marker);
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void DrawOponent(GeoPoint geoPoint) {
+
+        Marker marker = new Marker(mapView);
+        marker.setTitle("Opponent");
+        marker.setPosition(geoPoint);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+//        marker.setIcon(getResources().getDrawable(R.drawable.english, context.getTheme()));
+        mapView.getOverlays().add(marker);
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void Drawplayer(GeoPoint geoPoint) {
+
+        Marker marker = new Marker(mapView);
+        marker.setTitle("Player");
+        marker.setPosition(geoPoint);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+//        marker.setIcon(getResources().getDrawable(R.drawable.dutch, context.getTheme()));
+        mapView.getOverlays().add(marker);
+    }
 }
+
