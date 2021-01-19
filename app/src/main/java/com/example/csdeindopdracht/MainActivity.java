@@ -8,6 +8,7 @@ import com.example.csdeindopdracht.fragments.BaseMapFragment;
 import com.example.csdeindopdracht.fragments.CharacterFragment;
 import com.example.csdeindopdracht.fragments.raceFragment;
 import com.example.csdeindopdracht.fragments.trainingFragment;
+import com.example.csdeindopdracht.ors.DirectionsPost;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DirectionsPost.executeExample(getApplicationContext());
 
         //left button
         toCharacterButton = findViewById(R.id.button_character);
