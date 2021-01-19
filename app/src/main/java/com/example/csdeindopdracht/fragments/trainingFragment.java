@@ -42,7 +42,7 @@ public class trainingFragment extends Fragment {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
     //training related
-    private TrainingLogic traininglogic = new TrainingLogic();
+    private TrainingLogic traininglogic;
     private Timestamp startTime;
     private Timestamp currentTime;
     private Timestamp endTime;
@@ -66,6 +66,8 @@ public class trainingFragment extends Fragment {
         this.mapController.setCenter(locationOverlay.getMyLocation());
         this.mapController.animateTo(locationOverlay.getMyLocation());
         this.mapController.zoomTo(ZOOM_LEVEL);
+
+        traininglogic.startNewTraining();
     }
 
     @Override
@@ -73,6 +75,7 @@ public class trainingFragment extends Fragment {
         super.onStop();
         this.mapView.onPause();
         this.locationOverlay.onPause();
+        this.traininglogic.stopCurrentTraining();
     }
 
     @Override
