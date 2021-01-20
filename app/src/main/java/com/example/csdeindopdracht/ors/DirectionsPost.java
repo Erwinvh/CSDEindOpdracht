@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.csdeindopdracht.Logic.RaceLogic;
 import com.example.csdeindopdracht.R;
 import com.example.csdeindopdracht.ors.models.Response;
 
@@ -22,7 +23,7 @@ import okhttp3.RequestBody;
 public class DirectionsPost {
 
     private final static String TAG = "DirectionsPost.class";
-    private final static String BASE_URL = "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
+    private final static String BASE_URL = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
     private final static MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private Response response;
@@ -46,6 +47,16 @@ public class DirectionsPost {
         route.add(new GeoPoint(51.587509, 4.780056));
         new DirectionsPost.Builder(context, route).call(apiResponse -> {
             Log.d(TAG, "The route has " + apiResponse.response.getFeatures().getGeometry().getCoordinates().size() + " coordinates.");
+        });
+    }
+
+    public static void executeRaceRoute(Context context, GeoPoint begin, GeoPoint end, RaceLogic logic){
+        ArrayList<GeoPoint> route = new ArrayList<>();
+        route.add(begin);
+        route.add(end);
+        new DirectionsPost.Builder(context, route).call(apiResponse -> {
+            Log.d(TAG, "The route has " + apiResponse.response.getFeatures().getGeometry().getCoordinates().size() + " coordinates.");
+            logic.setRoute(apiResponse.response.getFeatures().getGeometry().getCoordinates());
         });
     }
 

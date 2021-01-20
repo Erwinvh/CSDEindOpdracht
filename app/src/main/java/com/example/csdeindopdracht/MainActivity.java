@@ -1,9 +1,11 @@
 package com.example.csdeindopdracht;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 
+import com.example.csdeindopdracht.Logic.MainViewModel;
 import com.example.csdeindopdracht.fragments.BaseMapFragment;
 import com.example.csdeindopdracht.fragments.CharacterFragment;
 import com.example.csdeindopdracht.fragments.raceFragment;
@@ -18,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton toCharacterButton;
     private FloatingActionButton trainingButton;
     private  FloatingActionButton racingButton;
-
+    private MainViewModel mainViewModel;
 
     private enum Fragments {
         BASE_MAP,
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        this.mainViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(MainViewModel.class);
         DirectionsPost.executeExample(getApplicationContext());
 
         //left button
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             if (!currentFragment.equals(Fragments.RACE)){
                 //TODO: register previous fragment?
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentcontainer, new raceFragment()) // TODO change fragment
+                        .replace(R.id.fragmentcontainer, new raceFragment(this.mainViewModel)) // TODO change fragment
                         .commit();
                 currentFragment = Fragments.RACE;
                 resetButtons();
@@ -100,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentcontainer, new BaseMapFragment())
+                .commit();
+        currentFragment = Fragments.BASE_MAP;
     }
 
     @Override
