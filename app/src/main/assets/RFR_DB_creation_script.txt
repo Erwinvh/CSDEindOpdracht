@@ -1,0 +1,123 @@
+
+CREATE TABLE IF NOT EXISTS Race(
+id TEXT PRIMARY KEY NOT NULL,
+IsComplete INTEGER NOT NULL
+);
+
+INSERT INTO Race VALUES("1", 0);
+INSERT INTO Race VALUES("2", 0);
+INSERT INTO Race VALUES("3", 0);
+INSERT INTO Race VALUES("4", 0);
+INSERT INTO Race VALUES("5", 0);
+INSERT INTO Race VALUES("6", 0);
+INSERT INTO Race VALUES("7", 0);
+
+CREATE TABLE IF NOT EXISTS Runner(
+name TEXT PRIMARY KEY NOT NULL,
+PhotoPath TEXT NOT NULL,
+IsPlayer INTEGER NOT NULL,
+IsComplete INTEGER NOT NULL,
+Statistic_ID INTEGER NOT NULL
+);
+
+INSERT INTO Runner VALUES("Player", "runner", 1, 0, 0);
+INSERT INTO Runner VALUES("Hans", "opponent1", 0, 0, 1);
+INSERT INTO Runner VALUES("Ricky", "opponent2", 0, 0, 2);
+INSERT INTO Runner VALUES("Andries", "opponent3", 0, 0, 3);
+INSERT INTO Runner VALUES("Jessica", "opponent4", 0, 0, 4);
+INSERT INTO Runner VALUES("Joli", "opponent5", 0, 0, 5);
+INSERT INTO Runner VALUES("Pieter", "opponent6", 0, 0, 6);
+INSERT INTO Runner VALUES("Forest Run", "forestrun", 0, 0, 7);
+
+CREATE TABLE IF NOT EXISTS RaceRegister(
+id TEXT NOT NULL,
+name TEXT NOT NULL,
+PRIMARY KEY (id, name)
+);
+
+INSERT INTO RaceRegister VALUES("1", "Hans");
+INSERT INTO RaceRegister VALUES("2", "Ricky");
+INSERT INTO RaceRegister VALUES("3", "Andries");
+INSERT INTO RaceRegister VALUES("4", "Jessica");
+INSERT INTO RaceRegister VALUES("5", "Joli");
+INSERT INTO RaceRegister VALUES("6", "Pieter");
+INSERT INTO RaceRegister VALUES("7", "Forest Run");
+
+INSERT INTO RaceRegister VALUES("1", "Player");
+INSERT INTO RaceRegister VALUES("2", "Player");
+INSERT INTO RaceRegister VALUES("3", "Player");
+INSERT INTO RaceRegister VALUES("4", "Player");
+INSERT INTO RaceRegister VALUES("5", "Player");
+INSERT INTO RaceRegister VALUES("6", "Player");
+INSERT INTO RaceRegister VALUES("7", "Player");
+
+CREATE TABLE IF NOT EXISTS statistic(
+id INTEGER PRIMARY KEY NOT NULL,
+TopSpeed REAL NOT NULL,
+GeneralSpeed REAL NOT NULL,
+RunDistance REAL NOT NULL
+);
+
+INSERT INTO statistic VALUES(0, 1, 1, 1);
+INSERT INTO statistic VALUES(1, 1, 1, 1);
+INSERT INTO statistic VALUES(2, 1, 1, 1);
+INSERT INTO statistic VALUES(3, 1, 1, 1);
+INSERT INTO statistic VALUES(4, 1, 1, 1);
+INSERT INTO statistic VALUES(5, 1, 1, 1);
+INSERT INTO statistic VALUES(6, 1, 1, 1);
+INSERT INTO statistic VALUES(7, 1, 1, 1);
+
+				
+CREATE TABLE IF NOT EXISTS Training(
+dateTime TEXT PRIMARY KEY NOT NULL,
+Time TEXT NOT NULL,
+Statistic_ID INTEGER NOT NULL
+);
+
+
+
+CREATE TABLE IF NOT EXISTS UserSetting(
+settingID TEXT PRIMARY KEY NOT NULL,
+Difficulty INTEGER NOT NULL,
+Language TEXT NOT NULL
+);
+
+INSERT INTO UserSetting VALUES("1", 1, "Nederlands");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
