@@ -2,13 +2,15 @@ package com.example.csdeindopdracht;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.csdeindopdracht.fragments.BaseMapFragment;
 import com.example.csdeindopdracht.fragments.CharacterFragment;
 import com.example.csdeindopdracht.fragments.raceFragment;
 import com.example.csdeindopdracht.fragments.trainingFragment;
-import com.example.csdeindopdracht.ors.DirectionsPost;
+import com.example.csdeindopdracht.services.Notify;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,8 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragments currentFragment = Fragments.BASE_MAP;
     private FloatingActionButton toCharacterButton;
     private FloatingActionButton trainingButton;
-    private  FloatingActionButton racingButton;
-
+    private FloatingActionButton racingButton;
 
     private enum Fragments {
         BASE_MAP,
@@ -32,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DirectionsPost.executeExample(getApplicationContext());
-
         //left button
         toCharacterButton = findViewById(R.id.button_character);
         toCharacterButton.setOnClickListener(v -> {
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 resetButtons();
                 toCharacterButton.setImageResource(R.drawable.stop_foreground);
                 //TODO: change floatingbutton to globe
-            }else{
+            } else {
                 //TODO: turn back to previous fragment or map fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentcontainer, new BaseMapFragment())
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = Fragments.TRAINING;
                 resetButtons();
                 trainingButton.setImageResource(R.drawable.stop_foreground);
-            }else{
+            } else {
                 //TODO: turn back to previous fragment or map fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentcontainer, new BaseMapFragment())
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         //right button
         racingButton = findViewById(R.id.button_race);
         racingButton.setOnClickListener(v -> {
-            if (!currentFragment.equals(Fragments.RACE)){
+            if (!currentFragment.equals(Fragments.RACE)) {
                 //TODO: register previous fragment?
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentcontainer, new raceFragment()) // TODO change fragment
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 resetButtons();
                 racingButton.setImageResource(R.drawable.stop_foreground);
 
-            }else{
+            } else {
                 //TODO: turn back to previous fragment or map fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentcontainer, new BaseMapFragment())
@@ -100,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        Notify.createNotification(getApplicationContext(), "test", "Content", new Intent(getApplicationContext(), MainActivity.class));
     }
 
     @Override
@@ -113,10 +114,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void resetButtons(){
+    public void resetButtons() {
         //TODO: find right icon to replace current one
         racingButton.setImageResource(R.drawable.race_foreground);
         trainingButton.setImageResource(R.drawable.training_foreground);
         toCharacterButton.setImageResource(R.drawable.ic_launcher_foreground);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        startService(new Intent(this, ForegroundService.class));
+//        stopService(new Intent(getApplicationContext(), ForegroundService.class));
     }
 }

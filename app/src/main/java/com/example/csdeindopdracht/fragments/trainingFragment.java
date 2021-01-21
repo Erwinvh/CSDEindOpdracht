@@ -41,15 +41,9 @@ public class trainingFragment extends Fragment {
     private final int ZOOM_LEVEL = 19;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
-    //training related
-    private TrainingLogic traininglogic;
-    private Timestamp startTime;
-    private Timestamp currentTime;
-    private Timestamp endTime;
-    private GeoPoint beginGeoPoint;
-    private GeoPoint endGeoPoint;
-    private ArrayList<GeoPoint> BetweenPointsList = new ArrayList<>();
-    private ArrayList<Timestamp> timesBetweenPoints = new ArrayList<>();
+    // Training
+    private TrainingLogic trainingLogic = new TrainingLogic();
+
 
     public trainingFragment() {
         // Required empty public constructor
@@ -67,7 +61,7 @@ public class trainingFragment extends Fragment {
         this.mapController.animateTo(locationOverlay.getMyLocation());
         this.mapController.zoomTo(ZOOM_LEVEL);
 
-        traininglogic.startNewTraining();
+        this.trainingLogic.startNewTraining(this.context);
     }
 
     @Override
@@ -75,7 +69,8 @@ public class trainingFragment extends Fragment {
         super.onStop();
         this.mapView.onPause();
         this.locationOverlay.onPause();
-        this.traininglogic.stopCurrentTraining();
+
+        this.trainingLogic.stopCurrentTraining();
     }
 
     @Override
@@ -85,9 +80,11 @@ public class trainingFragment extends Fragment {
         requestPermissions(new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission_group.LOCATION
         }, REQUEST_PERMISSIONS_REQUEST_CODE);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

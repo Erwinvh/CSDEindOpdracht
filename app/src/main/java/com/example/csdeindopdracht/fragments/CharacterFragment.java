@@ -45,7 +45,7 @@ public class CharacterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        player = new Runner(); // TODO remove test code
+        player = new Runner(); // TODO replace testcode with runner from database.
 
 
         name = getView().findViewById(R.id.title);

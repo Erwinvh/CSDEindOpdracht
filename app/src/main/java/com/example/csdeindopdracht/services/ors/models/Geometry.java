@@ -1,4 +1,4 @@
-package com.example.csdeindopdracht.ors.models;
+package com.example.csdeindopdracht.services.ors.models;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -7,19 +7,17 @@ import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
 
-public class Query {
+public class Geometry {
 
     private ArrayList<GeoPoint> coordinates;
-    private String profile;
-    private String format;
+    private String type;
 
-    public Query(ArrayList<GeoPoint> coordinates, String profile, String format) {
+    public Geometry(ArrayList<GeoPoint> coordinates, String type) {
         this.coordinates = coordinates;
-        this.profile = profile;
-        this.format = format;
+        this.type = type;
     }
 
-    public Query(JSONObject json) throws JSONException {
+    public Geometry(JSONObject json) throws JSONException {
         JSONArray jsonCoordinates = json.getJSONArray("coordinates");
         this.coordinates = new ArrayList<>(jsonCoordinates.length());
         for (int i = 0; i < jsonCoordinates.length(); i++) {
@@ -28,19 +26,14 @@ public class Query {
                     jsonCoordinates.getJSONArray(i).getDouble(0)
             ));
         }
-        this.profile = json.getString("profile");
-        this.format = json.getString("format");
+        this.type = json.getString("type");
     }
 
     public ArrayList<GeoPoint> getCoordinates() {
         return coordinates;
     }
 
-    public String getProfile() {
-        return profile;
-    }
-
-    public String getFormat() {
-        return format;
+    public String getType() {
+        return type;
     }
 }
