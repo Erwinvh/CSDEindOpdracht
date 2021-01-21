@@ -21,7 +21,7 @@ public class Notification {
      */
     public static NotificationCompat.Builder createNotification(Context context, String title, String content) {
         return new NotificationCompat.Builder(context, CHANNEL_ID_OTHER)
-                .setSmallIcon(R.drawable.forestrun)
+                .setSmallIcon(R.drawable.forest_run)
                 .setContentTitle("Forest Run " + title)
                 .setContentText(content)
                 .setStyle(new NotificationCompat.BigTextStyle())

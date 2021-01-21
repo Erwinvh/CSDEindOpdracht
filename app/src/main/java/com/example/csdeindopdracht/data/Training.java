@@ -2,6 +2,7 @@ package com.example.csdeindopdracht.data;
 
 import android.content.Context;
 
+import com.example.csdeindopdracht.Logic.MainViewModel;
 import com.example.csdeindopdracht.services.gps.Gps;
 
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public class Training {
     private Runner runner;
 
 
-    public Training(Context context) {
-        this.gps = new Gps(context);
+    public Training(MainViewModel mainViewModel) {
+        this.gps = new Gps(mainViewModel);
         this.route = new ArrayList<>();
         this.route.add(new GpsLocation(gps.getGpsLocation().getLocation(), gps.getGpsLocation().getTimestamp()));
         this.date = new Date(System.currentTimeMillis());

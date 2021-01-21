@@ -15,7 +15,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.csdeindopdracht.Logic.MainViewModel;
 import com.example.csdeindopdracht.data.GpsLocation;
 import com.example.csdeindopdracht.services.Notification;
 
@@ -26,18 +28,22 @@ public class Gps implements LocationListener {
     private static final int GPS_NOTIFICATION = 1;
     private final String TAG = this.getClass().getSimpleName();
 
+    private MainViewModel mainViewModel;
     private Context context;
+
     private GpsLocation gpsLocation;
     private LocationManager locationManager;
 
-    public Gps(Context context) {
-        this.context = context;
+    public Gps(MainViewModel mainViewModel) {
+        this.mainViewModel = mainViewModel;
+        this.context = mainViewModel.getApplication().getApplicationContext();
+
         this.gpsLocation = new GpsLocation(
                 null,
                 System.currentTimeMillis()
         );
 
-        this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        this.locationManager = (LocationManager) this.context.getSystemService(Context.LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling ActivityCompat#requestPermissions
@@ -53,6 +59,8 @@ public class Gps implements LocationListener {
     @Override
     public void onLocationChanged(@NonNull Location location) {
         if (location != null) {
+            Log.d(TAG, "onLocationChanged. Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude());
+
             gpsLocation = new GpsLocation(
                     new GeoPoint(location.getLatitude(), location.getLongitude()),
                     System.currentTimeMillis()

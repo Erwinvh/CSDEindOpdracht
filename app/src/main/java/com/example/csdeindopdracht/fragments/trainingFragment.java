@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,8 +46,8 @@ public class trainingFragment extends Fragment {
     private TrainingLogic trainingLogic = new TrainingLogic();
 
 
-    public trainingFragment() {
-        // Required empty public constructor
+    public trainingFragment(MainViewModel mainViewModel) {
+        this.mainViewModel = mainViewModel;
     }
 
 
@@ -61,7 +62,7 @@ public class trainingFragment extends Fragment {
         this.mapController.animateTo(locationOverlay.getMyLocation());
         this.mapController.zoomTo(ZOOM_LEVEL);
 
-        this.trainingLogic.startNewTraining(this.context);
+        this.trainingLogic.startNewTraining(this.mainViewModel);
     }
 
     @Override
