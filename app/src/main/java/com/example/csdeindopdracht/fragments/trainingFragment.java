@@ -67,7 +67,7 @@ public class trainingFragment extends Fragment {
         this.mapController.animateTo(locationOverlay.getMyLocation());
         this.mapController.zoomTo(ZOOM_LEVEL);
 
-        traininglogic.startNewTraining();
+//        traininglogic.startNewTraining();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class trainingFragment extends Fragment {
         super.onStop();
         this.mapView.onPause();
         this.locationOverlay.onPause();
-        this.traininglogic.stopCurrentTraining();
+       // this.traininglogic.stopCurrentTraining();
     }
 
     @Override
