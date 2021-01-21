@@ -37,11 +37,11 @@ public class MainViewModel extends AndroidViewModel {
     public MainActivity activity;
     //private final MutableLiveData<GpsCoordinate> gpsCoordinate = new MutableLiveData<>();
 
-    public RaceLogic raceLogic;
+
     private final MutableLiveData<RaceWithRunners> lastUncompletedRace = new MutableLiveData<>();
     private final MutableLiveData<TrainingStatistics> lastTraining = new MutableLiveData<>();
 
-    private RaceLogic raceLogic;
+    public RaceLogic raceLogic;
     private TrainingLogic trainingLogic;
 
     public MainViewModel(@NonNull Application application) {
