@@ -35,6 +35,8 @@ public class MainViewModel extends AndroidViewModel {
     private final MutableLiveData<RaceWithRunners> lastUncompletedRace = new MutableLiveData<>();
     private final MutableLiveData<TrainingStatistics> lastTraining = new MutableLiveData<>();
 
+    private RaceLogic raceLogic;
+
     public MainViewModel(@NonNull Application application) {
         super(application);
     }
@@ -62,6 +64,13 @@ public class MainViewModel extends AndroidViewModel {
             this.lastTraining.setValue(trainingStatistics.get(trainingStatistics.size()-1));
         });
         return lastTraining;
+    }
+
+    public RaceLogic getRaceLogic(){
+        if (raceLogic == null){
+            raceLogic = new RaceLogic(getApplication().getApplicationContext(), this);
+        }
+        return raceLogic;
     }
 
     public void setLanguage(LifecycleOwner owner, String language) {
