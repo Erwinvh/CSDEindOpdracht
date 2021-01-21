@@ -65,11 +65,15 @@ public class RaceLogic {
         while (on) {
             procedure();
 
+            //TODO: turn this to geofencing
             double a = MyLocation.distanceToAsDouble(endPoint);
+            double a2 = MyLocation.distanceToAsDouble(RaceRoute.get(RaceRoute.size()-1));
             double b = opponentLocation.distanceToAsDouble(endPoint);
-            if (a <= 15.0) {
+            double b2 = opponentLocation.distanceToAsDouble(RaceRoute.get(RaceRoute.size()-1));
+
+            if (a <= 15.0 || a2<= 15.0) {
                 CrossedFinishLine(true);
-            } else if (b <= 15.0) {
+            } else if (b <= 15.0 || b2 <= 15.0) {
                 CrossedFinishLine(false);
             }
 
@@ -84,7 +88,7 @@ public class RaceLogic {
             SetOpponentBooster();
             CalculateOponentPosition();
             if (checkCheckpointProgress(lastCheckPointPlayer, MyLocation)) {
-                if (lastCheckPointPlayer + 1 != RaceRoute.size()) {
+                if (lastCheckPointPlayer + 1 < RaceRoute.size()) {
                     lastCheckPointPlayer++;
                     xFactorPlayer = CalculateXFactor(lastCheckPointPlayer);
                     anglePlayer = CalculateAngle(lastCheckPointPlayer);
@@ -92,7 +96,7 @@ public class RaceLogic {
                 MyLocation.setCoords(RaceRoute.get(lastCheckPointPlayer).getLatitude(), RaceRoute.get(lastCheckPointPlayer).getLongitude());
             }
             if (checkCheckpointProgress(lastCheckPointOpponent, opponentLocation)) {
-                if (lastCheckPointOpponent + 1 != RaceRoute.size()) {
+                if (lastCheckPointOpponent + 1 < RaceRoute.size()) {
                     lastCheckPointOpponent++;
                     xFactorOpponent = CalculateXFactor(lastCheckPointOpponent);
                     angleOpponent = CalculateAngle(lastCheckPointOpponent);
@@ -100,8 +104,8 @@ public class RaceLogic {
                 opponentLocation.setCoords(RaceRoute.get(lastCheckPointOpponent).getLatitude(), RaceRoute.get(lastCheckPointOpponent).getLongitude());
 
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | NullPointerException e) {
+            on = false;
         }
     }
 
@@ -269,5 +273,9 @@ public class RaceLogic {
 
         this.RacingThread = new Thread(this::ConstantlyCheck);
         this.RacingThread.start();
+    }
+
+    public void forfeitRace() {
+        on = false;
     }
 }

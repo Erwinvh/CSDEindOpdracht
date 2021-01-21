@@ -89,6 +89,8 @@ public class raceFragment extends Fragment {
         super.onStop();
         this.mapView.onPause();
         this.locationOverlay.onPause();
+        //TODO: forfeit race
+        mainViewModel.raceLogic.forfeitRace();
     }
 
     @Override
