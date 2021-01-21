@@ -1,5 +1,6 @@
 package com.example.csdeindopdracht.Database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 import androidx.room.Transaction;
@@ -15,38 +16,38 @@ import java.util.List;
 @Dao
 public interface UserDao {
 
-    @Query("SELECT * FROM usersetting WHERE settingID LIKE :settingId")
-    UserSettings getUserSettings(String settingId);
+    @Query("SELECT * FROM usersetting WHERE settingID LIKE 0")
+    LiveData<UserSettings> getUserSettings();
 
     @Transaction
     @Query("SELECT * FROM runner")
-    List<RunnerStatistics> getRunnerStatistics();
+    LiveData<List<RunnerStatistics>> getRunnerStatistics();
 
     @Transaction
     @Query("SELECT * FROM runner WHERE name LIKE :runnerName")
-    RunnerStatistics getRunnerStatistics(String runnerName);
+    LiveData<RunnerStatistics> getRunnerStatistics(String runnerName);
 
     @Transaction
     @Query("SELECT * FROM training")
-    List<TrainingStatistics> getTrainingStatistics();
+    LiveData<List<TrainingStatistics>> getTrainingStatistics();
 
     @Transaction
     @Query("SELECT * FROM training WHERE dateTime LIKE :trainingDate")
-    TrainingStatistics getTrainingStatistics(String trainingDate);
+    LiveData<TrainingStatistics> getTrainingStatistics(String trainingDate);
 
     @Transaction
     @Query("SELECT * FROM runner")
-    List<RunnerWithRace> getRunnersWithRace();
+    LiveData<List<RunnerWithRace>> getRunnersWithRace();
 
     @Transaction
     @Query("SELECT * FROM runner WHERE name LIKE :runnerName")
-    RunnerWithRace getRunnerRaces(String runnerName);
+    LiveData<RunnerWithRace> getRunnerRaces(String runnerName);
 
     @Transaction
     @Query("SELECT * FROM race")
-    List<RaceWithRunners> getRacesWithRunners();
+    LiveData<List<RaceWithRunners>> getRacesWithRunners();
 
     @Transaction
     @Query("SELECT * FROM race WHERE id LIKE :raceId")
-    RaceWithRunners getRaceRunners(String raceId);
+    LiveData<RaceWithRunners> getRaceRunners(String raceId);
 }
