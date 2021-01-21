@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.csdeindopdracht.Logic.MainViewModel;
 import com.example.csdeindopdracht.Logic.TrainingLogic;
+import com.example.csdeindopdracht.MainActivity;
 import com.example.csdeindopdracht.R;
 
 import org.osmdroid.config.Configuration;
@@ -41,20 +43,15 @@ public class trainingFragment extends Fragment {
     private final int ZOOM_LEVEL = 19;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
-    //training related
-    private TrainingLogic traininglogic;
-    private Timestamp startTime;
-    private Timestamp currentTime;
-    private Timestamp endTime;
-    private GeoPoint beginGeoPoint;
-    private GeoPoint endGeoPoint;
-    private ArrayList<GeoPoint> BetweenPointsList = new ArrayList<>();
-    private ArrayList<Timestamp> timesBetweenPoints = new ArrayList<>();
+    private MainActivity mainActivity;
 
-    public trainingFragment() {
-        // Required empty public constructor
+    // Training
+    private TrainingLogic trainingLogic = new TrainingLogic();
+
+
+    public trainingFragment(MainViewModel mainViewModel) {
+        this.mainViewModel = mainViewModel;
     }
-
 
 
     @Override
@@ -67,7 +64,8 @@ public class trainingFragment extends Fragment {
         this.mapController.animateTo(locationOverlay.getMyLocation());
         this.mapController.zoomTo(ZOOM_LEVEL);
 
-//        traininglogic.startNewTraining();
+        this.mainViewModel.startTraining();
+        this.mainActivity = (MainActivity) getActivity();
     }
 
     @Override
@@ -75,7 +73,8 @@ public class trainingFragment extends Fragment {
         super.onStop();
         this.mapView.onPause();
         this.locationOverlay.onPause();
-       // this.traininglogic.stopCurrentTraining();
+
+        this.mainViewModel.stopTraining(this.mainActivity);
     }
 
     @Override
@@ -85,9 +84,11 @@ public class trainingFragment extends Fragment {
         requestPermissions(new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission_group.LOCATION
         }, REQUEST_PERMISSIONS_REQUEST_CODE);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -111,6 +112,7 @@ public class trainingFragment extends Fragment {
 
     final static int GLOBE_WIDTH = 256; // a constant in Google's map projection
     final static int ZOOM_MAX = 21;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
@@ -132,18 +134,10 @@ public class trainingFragment extends Fragment {
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
 
-
-
     }
 
     public MyLocationNewOverlay getLocationOverlay() {
         return locationOverlay;
-    }
-
-    public void StopChecking(){
-//        if(gpsLogic != null){
-//            gpsLogic.stop();
-//        }
     }
 
 }

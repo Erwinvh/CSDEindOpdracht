@@ -37,11 +37,29 @@ public class MainViewModel extends AndroidViewModel {
     public MainActivity activity;
     //private final MutableLiveData<GpsCoordinate> gpsCoordinate = new MutableLiveData<>();
 
-    public RaceLogic raceLogic;
+
     private final MutableLiveData<RaceWithRunners> lastUncompletedRace = new MutableLiveData<>();
     private final MutableLiveData<TrainingStatistics> lastTraining = new MutableLiveData<>();
+
+    public RaceLogic raceLogic;
+    private TrainingLogic trainingLogic;
+
     public MainViewModel(@NonNull Application application) {
         super(application);
+    }
+    public void startTraining() {
+        if (trainingLogic == null) {
+            trainingLogic = new TrainingLogic();
+        }
+        trainingLogic.startNewTraining(this);
+    }
+
+
+    public void stopTraining(LifecycleOwner owner) {
+        if (trainingLogic == null) {
+            trainingLogic = new TrainingLogic();
+        }
+        trainingLogic.stopCurrentTraining(getApplication().getApplicationContext(), owner);
     }
 
     public RaceLogic getRaceLogic(){
@@ -155,6 +173,11 @@ public class MainViewModel extends AndroidViewModel {
 
         this.userSettings = Repository.getInstance().getUserSetting(getApplication().getApplicationContext());
     }
+
+    public LiveData<RunnerStatistics> getPlayer() {
+        return Repository.getInstance().getStatistics(getApplication().getApplicationContext(), "Player");
+    }
+
     //todo This is most likely not possible to place here. What will most likely needs to be done if for the ui/logic which needs it to get the settings and pull the difficulty itself.
 //    public int getDifficulty(){
 //        return Database.getINSTANCE(context).userAccess().getUserSettings(this.UserSettingsID).getDifficulty();

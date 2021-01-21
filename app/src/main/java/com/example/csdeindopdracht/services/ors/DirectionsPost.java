@@ -1,5 +1,4 @@
-package com.example.csdeindopdracht.ors;
-
+package com.example.csdeindopdracht.services.ors;
 
 import android.content.Context;
 import android.util.Log;
@@ -7,7 +6,7 @@ import android.widget.Toast;
 
 import com.example.csdeindopdracht.Logic.RaceLogic;
 import com.example.csdeindopdracht.R;
-import com.example.csdeindopdracht.ors.models.Response;
+import com.example.csdeindopdracht.services.ors.models.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;

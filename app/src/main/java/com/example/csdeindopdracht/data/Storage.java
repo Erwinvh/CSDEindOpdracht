@@ -7,10 +7,10 @@ public class Storage {
     public LinkedList<Runner> oponentList;
     public Runner player;
     public int index;
-    public LinkedList<Training> trainings;
+    public LinkedList<Training> trainingSessions;
 
     public Storage (String name){
-        trainings = new LinkedList<>();
+        trainingSessions = new LinkedList<>();
         oponentList = new LinkedList<Runner>();
         fillOponenetList();
         player = new Runner();

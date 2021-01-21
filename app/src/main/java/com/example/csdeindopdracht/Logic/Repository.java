@@ -1,6 +1,7 @@
 package com.example.csdeindopdracht.Logic;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -50,8 +51,16 @@ public class Repository {
     }
 
     public LiveData<RunnerStatistics> getStatistics(Context context, String name) {
-        return Database.getINSTANCE(context).userAccess().getRunnerStatistics(name);
+        return Database
+                .getINSTANCE(context)
+                .userAccess()
+                .getRunnerStatistics(name);
     }
+
+    public LiveData<Runner> getPlayer(Context context) {
+        return Database.getINSTANCE(context).userAccess().getPlayer();
+    }
+
     public void updateUserSettings(Context context, UserSettings userSettings){
         Thread updateThread = new Thread(() -> Database.getINSTANCE(context).adminAccess().updateUserSettings(userSettings));
         updateThread.start();
@@ -99,6 +108,8 @@ public class Repository {
     }
 
     public void updateRunnerStatistics(Context context, RunnerStatistics runnerStatistics) {
+        Log.d("Database test", "check");
+
         Thread updateThread = new Thread(() -> {
             Database.getINSTANCE(context).adminAccess().updateStatistics(runnerStatistics.getStatistic());
             Database.getINSTANCE(context).adminAccess().updateRunners(runnerStatistics.getRunner());

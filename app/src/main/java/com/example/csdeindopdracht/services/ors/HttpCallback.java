@@ -1,4 +1,4 @@
-package com.example.csdeindopdracht.ors;
+package com.example.csdeindopdracht.services.ors;
 
 import org.json.JSONException;
 

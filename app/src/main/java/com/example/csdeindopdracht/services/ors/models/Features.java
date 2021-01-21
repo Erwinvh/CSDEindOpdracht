@@ -1,4 +1,4 @@
-package com.example.csdeindopdracht.ors.models;
+package com.example.csdeindopdracht.services.ors.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;

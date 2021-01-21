@@ -1,15 +1,12 @@
 package com.example.csdeindopdracht.Logic;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Looper;
 import android.widget.Toast;
 
 
-import com.example.csdeindopdracht.MainActivity;
 import com.example.csdeindopdracht.R;
 import com.example.csdeindopdracht.fragments.raceFragment;
-import com.example.csdeindopdracht.ors.DirectionsPost;
+import com.example.csdeindopdracht.services.ors.DirectionsPost;
 
 import org.osmdroid.util.GeoPoint;
 

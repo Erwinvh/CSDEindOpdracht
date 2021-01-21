@@ -1,5 +1,6 @@
 package com.example.csdeindopdracht.fragments;
 
+import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +19,12 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.csdeindopdracht.Database.Entity.Runner;
+import com.example.csdeindopdracht.Database.Entity.Statistic;
+import com.example.csdeindopdracht.Database.Relations.RunnerStatistics;
+import com.example.csdeindopdracht.Logic.MainViewModel;
+import com.example.csdeindopdracht.Logic.Repository;
 import com.example.csdeindopdracht.R;
-import com.example.csdeindopdracht.data.Runner;
 
 import java.util.Objects;
 
@@ -27,7 +33,10 @@ public class CharacterFragment extends Fragment {
 
     private final String TAG = getClass().getSimpleName();
 
-    public Runner player;
+    private MainViewModel mainViewModel;
+    private Runner player;
+    private Statistic statistic;
+
     private TextView name;
     private ProgressBar stamina;
     private ProgressBar speed;
@@ -36,17 +45,14 @@ public class CharacterFragment extends Fragment {
     private ImageButton dutchFlag;
 
 
-    public CharacterFragment() {
-        // Required empty public constructor
+    public CharacterFragment(MainViewModel mainViewModel) {
+        this.mainViewModel = mainViewModel;
     }
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        player = new Runner(); // TODO remove test code
-
 
         name = getView().findViewById(R.id.title);
         stamina = getView().findViewById(R.id.stamina_bar);
@@ -55,10 +61,17 @@ public class CharacterFragment extends Fragment {
         englishFlag = getView().findViewById(R.id.english_flag);
         dutchFlag = getView().findViewById(R.id.dutch_flag);
 
-        name.setText(player.getPlayerName());
-        stamina.setProgress(player.getStamina());
-        speed.setProgress(player.getSpeed());
-        topSpeed.setProgress(player.getTopSpeed());
+        mainViewModel.getPlayer().observe(this, runnerStatistics -> {
+            player = runnerStatistics.getRunner();
+            statistic = runnerStatistics.getStatistic();
+
+            Log.d(TAG, "statistics: [" + statistic.getRunDistance() + "," + statistic.getGeneralSpeed() + "," + statistic.getTopSpeed() + "]");
+
+            name.setText(player.getName());
+            stamina.setProgress((int) statistic.getRunDistance());
+            speed.setProgress((int) statistic.getGeneralSpeed());
+            topSpeed.setProgress((int) statistic.getTopSpeed());
+        });
 
         englishFlag.setOnClickListener(v -> {
             // Select english flag
@@ -88,6 +101,7 @@ public class CharacterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_character, container, false);
     }
