@@ -12,6 +12,7 @@ public class Runner {
         this.stamina = stamina;
         this.speed = speed;
         this.topSpeed = topSpeed;
+        moreThanZero();
     }
 
     public Runner(int stamina, int speed, int topSpeed) {
@@ -19,6 +20,7 @@ public class Runner {
         this.stamina = stamina;
         this.speed = speed;
         this.topSpeed = topSpeed;
+        moreThanZero();
     }
 
     public Runner() {
@@ -26,6 +28,12 @@ public class Runner {
         stamina = 65;
         speed = 100;
         topSpeed = 90;
+    }
+
+    private void moreThanZero() {
+        if (this.stamina == 0) this.stamina = 1;
+        if (this.speed == 0) this.speed = 1;
+        if (this.topSpeed == 0) this.topSpeed = 1;
     }
 
     public int getTopSpeed() {

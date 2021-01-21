@@ -50,7 +50,10 @@ public class Repository {
     }
 
     public LiveData<RunnerStatistics> getStatistics(Context context, String name) {
-        return Database.getINSTANCE(context).userAccess().getRunnerStatistics(name);
+        return Database
+                .getINSTANCE(context)
+                .userAccess()
+                .getRunnerStatistics(name);
     }
 
     public LiveData<Runner> getPlayer(Context context) {

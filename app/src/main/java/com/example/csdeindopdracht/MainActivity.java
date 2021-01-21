@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.fragmentcontainer, new CharacterFragment(mainViewModel))
                         .commit();
                 currentFragment = Fragments.CHARACTER;
-                resetButtons();
-                toCharacterButton.setImageResource(R.drawable.stop_foreground);
                 //TODO: change floatingbutton to globe
             } else {
                 //TODO: turn back to previous fragment or map fragment
@@ -56,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.fragmentcontainer, new BaseMapFragment())
                         .commit();
                 currentFragment = Fragments.BASE_MAP;
-                resetButtons();
             }
         });
 
@@ -69,15 +66,12 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.fragmentcontainer, new trainingFragment(mainViewModel)) // TODO change fragment
                         .commit();
                 currentFragment = Fragments.TRAINING;
-                resetButtons();
-                trainingButton.setImageResource(R.drawable.stop_foreground);
             } else {
                 //TODO: turn back to previous fragment or map fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentcontainer, new BaseMapFragment())
                         .commit();
                 currentFragment = Fragments.BASE_MAP;
-                resetButtons();
             }
         });
 
@@ -90,22 +84,15 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.fragmentcontainer, new raceFragment()) // TODO change fragment
                         .commit();
                 currentFragment = Fragments.RACE;
-                resetButtons();
-                racingButton.setImageResource(R.drawable.stop_foreground);
-
             } else {
                 //TODO: turn back to previous fragment or map fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentcontainer, new BaseMapFragment())
                         .commit();
                 currentFragment = Fragments.BASE_MAP;
-
-                resetButtons();
             }
 
         });
-
-        Notify.createNotification(getApplicationContext(), "test", "Content", new Intent(getApplicationContext(), MainActivity.class));
     }
 
     @Override
@@ -116,20 +103,5 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
             currentFragment = Fragments.BASE_MAP;
         } else finish();
-    }
-
-
-    public void resetButtons() {
-        //TODO: find right icon to replace current one
-        racingButton.setImageResource(R.drawable.race_foreground);
-        trainingButton.setImageResource(R.drawable.training_foreground);
-        toCharacterButton.setImageResource(R.drawable.ic_launcher_foreground);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-//        startService(new Intent(this, ForegroundService.class));
-//        stopService(new Intent(getApplicationContext(), ForegroundService.class));
     }
 }

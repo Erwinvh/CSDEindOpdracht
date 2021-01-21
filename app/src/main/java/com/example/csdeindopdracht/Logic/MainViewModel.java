@@ -157,7 +157,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public LiveData<RunnerStatistics> getPlayer() {
-        return Repository.getInstance().getStatistics(getApplication().getApplicationContext(), "player");
+        return Repository.getInstance().getStatistics(getApplication().getApplicationContext(), "Player");
     }
 
     //todo This is most likely not possible to place here. What will most likely needs to be done if for the ui/logic which needs it to get the settings and pull the difficulty itself.
