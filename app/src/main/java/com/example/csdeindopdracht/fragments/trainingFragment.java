@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.csdeindopdracht.Logic.MainViewModel;
 import com.example.csdeindopdracht.Logic.TrainingLogic;
+import com.example.csdeindopdracht.MainActivity;
 import com.example.csdeindopdracht.R;
 
 import org.osmdroid.config.Configuration;
@@ -42,6 +43,8 @@ public class trainingFragment extends Fragment {
     private final int ZOOM_LEVEL = 19;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
+    private MainActivity mainActivity;
+
     // Training
     private TrainingLogic trainingLogic = new TrainingLogic();
 
@@ -62,6 +65,7 @@ public class trainingFragment extends Fragment {
         this.mapController.zoomTo(ZOOM_LEVEL);
 
         this.mainViewModel.startTraining();
+        this.mainActivity = (MainActivity) getActivity();
     }
 
     @Override
@@ -70,7 +74,7 @@ public class trainingFragment extends Fragment {
         this.mapView.onPause();
         this.locationOverlay.onPause();
 
-        this.mainViewModel.stopTraining(this);
+        this.mainViewModel.stopTraining(this.mainActivity);
     }
 
     @Override

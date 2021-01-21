@@ -25,10 +25,10 @@ public class TrainingLogic {
     private final int MAX_STAMINA = 3600; // 1 Hours in seconds.
     private final double MAX_STAMINA_PERCENTAGE = (double) MAX_STAMINA / 100;
 
-    private final int MAX_SPEED = 16; // average km/h
+    private final int MAX_SPEED = 25; // average km/h
     private final double MAX_SPEED_PERCENTAGE = (double) MAX_SPEED / 100;
 
-    private final int MAX_TOP_SPEED = 45; // km/h at Usain Bolt top speed
+    private final int MAX_TOP_SPEED = 40; // km/h at Usain Bolt speed
     private final double MAX_TOP_SPEED_PERCENTAGE = (double) MAX_TOP_SPEED / 100;
 
     private MainViewModel mainViewModel;
@@ -71,35 +71,30 @@ public class TrainingLogic {
         final Statistic[] statistic = new Statistic[1];
 
         mainViewModel.getPlayer().observe(owner, runnerStatistics -> {
+            Log.d(TAG, "lambda test.");
             player[0] = runnerStatistics.getRunner();
             statistic[0] = runnerStatistics.getStatistic();
-        });
 
-        try {
-            Repository.getInstance().updateRunnerStatistics(context, new RunnerStatistics(
+            int id;
+            if (training != null) {
+                id = statistic[0].getId();
+            } else {
+                id = 0;
+            }
+
+            mainViewModel.saveRunner(new RunnerStatistics(
                     new com.example.csdeindopdracht.Database.Entity.Runner(
                             player[0].getName(),
                             player[0].getPhotoPath(),
                             player[0].isPlayer(),
                             player[0].isComplete(),
                             player[0].getStatisticsID()),
-                    new Statistic(statistic[0].getId(),
+                    new Statistic(id,
                             (double) runner.topSpeed,
-                            (double)runner.getSpeed(),
-                            (double)runner.getStamina()
-                    )
-            ));
-        } catch (NullPointerException e) {
-            Log.d(TAG, "No previous training available.");
-//            Repository.getInstance().addTraining(
-//                    context,
-//                    new TrainingStatistics(
-//                            new com.example.csdeindopdracht.Database.Entity.Training(this.training.getDate().toString(), String.valueOf(this.time), 0),
-//
-//                            new Statistic(0, (double) runner.getTopSpeed(), (double) runner.getSpeed(), (double) runner.getStamina())
-//                    )
-//            );
-        }
+                            (double) runner.getSpeed(),
+                            (double) runner.getStamina()
+                    )));
+        });
 
         this.training = null;
         this.trainingTimer.cancel();
@@ -167,7 +162,12 @@ public class TrainingLogic {
 
         LiveData<List<TrainingStatistics>> trainings = Repository.getInstance().getTrainings(context);
         trainings.observe(owner, trainingStatistics -> {
-            training[0] = trainingStatistics.get(trainingStatistics.size() - 1).getTraining();
+            try {
+                training[0] = trainingStatistics.get(trainingStatistics.size() - 1).getTraining();
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.e(TAG, "No trainings available: " + e.getLocalizedMessage());
+                training[0] = null;
+            }
         });
 
         return training[0];

@@ -1,6 +1,7 @@
 package com.example.csdeindopdracht.Logic;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -107,6 +108,8 @@ public class Repository {
     }
 
     public void updateRunnerStatistics(Context context, RunnerStatistics runnerStatistics) {
+        Log.d("Database test", "check");
+
         Thread updateThread = new Thread(() -> {
             Database.getINSTANCE(context).adminAccess().updateStatistics(runnerStatistics.getStatistic());
             Database.getINSTANCE(context).adminAccess().updateRunners(runnerStatistics.getRunner());

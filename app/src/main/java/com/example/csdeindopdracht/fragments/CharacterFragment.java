@@ -65,6 +65,8 @@ public class CharacterFragment extends Fragment {
             player = runnerStatistics.getRunner();
             statistic = runnerStatistics.getStatistic();
 
+            Log.d(TAG, "statistics: [" + statistic.getRunDistance() + "," + statistic.getGeneralSpeed() + "," + statistic.getTopSpeed() + "]");
+
             name.setText(player.getName());
             stamina.setProgress((int) statistic.getRunDistance());
             speed.setProgress((int) statistic.getGeneralSpeed());
