@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MainViewModel extends AndroidViewModel {
 
     private static final Locale LOCALE_DEFAULT = new Locale("nl");
-    private final MutableLiveData<UserSettings> userSettings = new MutableLiveData<>();
+    private LiveData<UserSettings> userSettings = new MutableLiveData<>();
     private final MutableLiveData<TrainingStatistics> Training = new MutableLiveData<>();
     public MainActivity activity;
     //private final MutableLiveData<GpsCoordinate> gpsCoordinate = new MutableLiveData<>();
@@ -42,6 +42,13 @@ public class MainViewModel extends AndroidViewModel {
     private final MutableLiveData<TrainingStatistics> lastTraining = new MutableLiveData<>();
     public MainViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    public RaceLogic getRaceLogic(){
+        if (raceLogic == null){
+            raceLogic = new RaceLogic(getApplication().getApplicationContext(), this);
+        }
+        return raceLogic;
     }
 
     public void setMainActivity(MainActivity activity){
@@ -145,9 +152,9 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     private void updateUserSetting() {
-    }
-        this.userSettings = Repository.getInstance().getUserSetting(getApplication().getApplicationContext());
 
+        this.userSettings = Repository.getInstance().getUserSetting(getApplication().getApplicationContext());
+    }
     //todo This is most likely not possible to place here. What will most likely needs to be done if for the ui/logic which needs it to get the settings and pull the difficulty itself.
 //    public int getDifficulty(){
 //        return Database.getINSTANCE(context).userAccess().getUserSettings(this.UserSettingsID).getDifficulty();
