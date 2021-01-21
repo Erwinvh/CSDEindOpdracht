@@ -266,6 +266,10 @@ public class RaceLogic {
     public void setRoute(ArrayList<GeoPoint> coordinates) {
         RaceRoute = coordinates;
         this.RaceFragment.DrawRoute(RaceRoute);
+        GeoPoint lastroute = RaceRoute.get(RaceRoute.size()-1);
+        if (lastroute.getLongitude()!= endPoint.getLongitude()||lastroute.getLatitude()!= endPoint.getLatitude()){
+            RaceFragment.DrawEndPoint(lastroute);
+        }
         xFactorPlayer = CalculateXFactor(0);
         anglePlayer = CalculateAngle(0);
         xFactorOpponent = CalculateXFactor(0);

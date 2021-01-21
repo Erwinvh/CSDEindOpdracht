@@ -56,6 +56,7 @@ public class raceFragment extends Fragment {
     private GeoPoint OpponentGeoPoint;
     private Marker PlayerMarker;
     private Marker OpponentMarker;
+    private Marker EndpointMarker;
 
     private final int ZOOM_LEVEL = 19;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
@@ -241,12 +242,12 @@ public class raceFragment extends Fragment {
     @SuppressLint("UseCompatLoadingForDrawables")
     public void DrawEndPoint(GeoPoint geoPoint) {
 
-        Marker marker = new Marker(mapView);
-        marker.setTitle("EndPoint");
-        marker.setPosition(geoPoint);
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        EndpointMarker = new Marker(mapView);
+        EndpointMarker.setTitle("EndPoint");
+        EndpointMarker.setPosition(geoPoint);
+        EndpointMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 //        marker.setIcon(getResources().getDrawable(R.drawable.race_foreground, context.getTheme()));
-        mapView.getOverlays().add(marker);
+        mapView.getOverlays().add(EndpointMarker);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
