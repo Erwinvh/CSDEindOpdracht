@@ -18,6 +18,7 @@ import com.example.csdeindopdracht.Database.Entity.UserSettings;
 import com.example.csdeindopdracht.Database.Relations.RaceWithRunners;
 import com.example.csdeindopdracht.Database.Relations.RunnerStatistics;
 import com.example.csdeindopdracht.Database.Relations.TrainingStatistics;
+import com.example.csdeindopdracht.MainActivity;
 
 import java.util.List;
 import java.util.Locale;
@@ -32,9 +33,11 @@ public class MainViewModel extends AndroidViewModel {
 
     private static final Locale LOCALE_DEFAULT = new Locale("nl");
     private LiveData<UserSettings> userSettings = new MutableLiveData<>();
-    private LiveData<TrainingStatistics> Training = new MutableLiveData<>();
+    private final MutableLiveData<TrainingStatistics> Training = new MutableLiveData<>();
+    public MainActivity activity;
     //private final MutableLiveData<GpsCoordinate> gpsCoordinate = new MutableLiveData<>();
 
+    public RaceLogic raceLogic;
     private final MutableLiveData<RaceWithRunners> lastUncompletedRace = new MutableLiveData<>();
     private final MutableLiveData<TrainingStatistics> lastTraining = new MutableLiveData<>();
 
@@ -59,11 +62,25 @@ public class MainViewModel extends AndroidViewModel {
         trainingLogic.stopCurrentTraining(getApplication().getApplicationContext(), owner);
     }
 
+    public RaceLogic getRaceLogic(){
+        if (raceLogic == null){
+            raceLogic = new RaceLogic(getApplication().getApplicationContext(), this);
+        }
+        return raceLogic;
+    }
+
+    public void setMainActivity(MainActivity activity){
+        this.activity = activity;
+    }
     public LiveData<UserSettings> getUserSetting() {
         updateUserSetting();
         return userSettings;
     }
 
+    public String getCurrentOpponentImage() {
+        //TODO: get opponentImage
+        return "opponent1";
+    }
     public LiveData<RaceWithRunners> getLastUncompletedRace(LifecycleOwner owner){
         LiveData<List<RaceWithRunners>> races = Repository.getInstance().getRaces(getApplication().getApplicationContext());
         races.observe(owner, raceWithRunners -> {
@@ -132,8 +149,8 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void setLanguage(LifecycleOwner owner, String language) {
-        updateUserSetting();
         this.userSettings.observe(owner, settings -> {
+        updateUserSetting();
             settings.setLanguage(language);
             Repository.getInstance().updateUserSettings(getApplication().getApplicationContext(), settings);
         });
@@ -153,6 +170,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     private void updateUserSetting() {
+
         this.userSettings = Repository.getInstance().getUserSetting(getApplication().getApplicationContext());
     }
 

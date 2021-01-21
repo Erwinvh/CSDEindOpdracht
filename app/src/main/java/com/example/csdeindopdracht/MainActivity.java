@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         this.mainViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(MainViewModel.class);
+        this.mainViewModel.setMainActivity(this);
 
         //left button
         toCharacterButton = findViewById(R.id.button_character);
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             if (!currentFragment.equals(Fragments.RACE)) {
                 //TODO: register previous fragment?
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentcontainer, new raceFragment()) // TODO change fragment
+                        .replace(R.id.fragmentcontainer, new raceFragment(this.mainViewModel)) // TODO change fragment
                         .commit();
                 currentFragment = Fragments.RACE;
             } else {
@@ -93,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentcontainer, new BaseMapFragment())
+                .commit();
+        currentFragment = Fragments.BASE_MAP;
     }
 
     @Override
