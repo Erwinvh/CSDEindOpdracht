@@ -71,7 +71,6 @@ public class TrainingLogic {
         final Statistic[] statistic = new Statistic[1];
 
         mainViewModel.getPlayer().observe(owner, runnerStatistics -> {
-            Log.d(TAG, "lambda test.");
             player[0] = runnerStatistics.getRunner();
             statistic[0] = runnerStatistics.getStatistic();
 
