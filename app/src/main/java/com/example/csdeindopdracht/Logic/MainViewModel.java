@@ -12,8 +12,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.csdeindopdracht.Database.Database;
 import com.example.csdeindopdracht.Database.Entity.Race;
+import com.example.csdeindopdracht.Database.Entity.Runner;
+import com.example.csdeindopdracht.Database.Entity.Statistic;
 import com.example.csdeindopdracht.Database.Entity.UserSettings;
 import com.example.csdeindopdracht.Database.Relations.RaceWithRunners;
+import com.example.csdeindopdracht.Database.Relations.RunnerStatistics;
 import com.example.csdeindopdracht.Database.Relations.TrainingStatistics;
 
 import java.util.List;
@@ -73,6 +76,18 @@ public class MainViewModel extends AndroidViewModel {
         return raceLogic;
     }
 
+    public LiveData<RunnerStatistics> getRunnerStatistics(String runnerName) {
+        return Repository.getInstance().getStatistics(getApplication().getApplicationContext(), runnerName);
+    }
+
+    public void saveTrainingStatistics(TrainingStatistics trainingStatistics) {
+        Repository.getInstance().updateTraining(getApplication().getApplicationContext(), trainingStatistics);
+    }
+
+    public void saveRunner(RunnerStatistics runnerStatistics) {
+        Repository.getInstance().updateRunnerStatistics(getApplication().getApplicationContext(), runnerStatistics);
+    }
+    
     public double getMaxSpeed() {
         //TODO: get player maxspeed
         return 3;
