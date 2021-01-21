@@ -18,8 +18,8 @@ public class Training {
     private Runner runner;
 
 
-    public Training(MainViewModel mainViewModel) {
-        this.gps = new Gps(mainViewModel);
+    public Training(Context context) {
+        this.gps = new Gps(context);
         this.route = new ArrayList<>();
         this.route.add(new GpsLocation(gps.getGpsLocation().getLocation(), gps.getGpsLocation().getTimestamp()));
         this.date = new Date(System.currentTimeMillis());

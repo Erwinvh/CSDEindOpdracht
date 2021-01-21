@@ -39,9 +39,24 @@ public class MainViewModel extends AndroidViewModel {
     private final MutableLiveData<TrainingStatistics> lastTraining = new MutableLiveData<>();
 
     private RaceLogic raceLogic;
+    private TrainingLogic trainingLogic;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
+    }
+    public void startTraining() {
+        if (trainingLogic == null) {
+            trainingLogic = new TrainingLogic();
+        }
+        trainingLogic.startNewTraining(getApplication().getApplicationContext());
+    }
+
+
+    public void stopTraining(LifecycleOwner owner) {
+        if (trainingLogic == null) {
+            trainingLogic = new TrainingLogic();
+        }
+        trainingLogic.stopCurrentTraining(getApplication().getApplicationContext(), owner);
     }
 
     public LiveData<UserSettings> getUserSetting() {

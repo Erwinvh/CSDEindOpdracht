@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
+import com.example.csdeindopdracht.Database.Entity.Runner;
 import com.example.csdeindopdracht.Database.Entity.UserSettings;
 import com.example.csdeindopdracht.Database.Relations.RaceWithRunners;
 import com.example.csdeindopdracht.Database.Relations.RunnerStatistics;
@@ -18,6 +19,9 @@ public interface UserDao {
 
     @Query("SELECT * FROM usersetting WHERE settingID LIKE 1")
     LiveData<UserSettings> getUserSettings();
+
+    @Query("SELECT * FROM Runner WHERE IsPlayer LIKE 1")
+    LiveData<Runner> getPlayer();
 
     @Transaction
     @Query("SELECT * FROM runner")

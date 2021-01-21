@@ -1,7 +1,12 @@
 package com.example.csdeindopdracht.Logic;
 
+import android.content.Context;
 import android.util.Log;
 
+import androidx.lifecycle.LifecycleOwner;
+
+import com.example.csdeindopdracht.Database.Entity.Statistic;
+import com.example.csdeindopdracht.Database.Relations.TrainingStatistics;
 import com.example.csdeindopdracht.data.GpsLocation;
 import com.example.csdeindopdracht.data.Runner;
 import com.example.csdeindopdracht.data.Training;
@@ -14,7 +19,7 @@ public class TrainingLogic {
 
     private final String TAG = this.getClass().getSimpleName();
 
-    private MainViewModel mainViewModel;
+    private String username = "";
 
     private final int MAX_STAMINA = 600; // 2 Hours in seconds. // TODO test purpose: 10 minutes
     private final double MAX_STAMINA_PERCENTAGE = (double) MAX_STAMINA / 100;
@@ -28,14 +33,13 @@ public class TrainingLogic {
     private Training training = null;
     private Timer trainingTimer = new Timer("Training timer");
 
-    public boolean startNewTraining(MainViewModel mainViewModel) {
+    public boolean startNewTraining(Context context) {
         if (this.training != null && !this.training.isFinalised()) {
             Log.e(TAG, "Another training is still in progress.");
             return false;
         }
 
-        this.mainViewModel = mainViewModel;
-        this.training = new Training(mainViewModel);
+        this.training = new Training(context);
         this.trainingTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -45,17 +49,21 @@ public class TrainingLogic {
         return true;
     }
 
-    public void stopCurrentTraining() {
-        Runner runner = calculateRunner();
-
-        // TODO save runner and statistics to database.
+    public void stopCurrentTraining(Context context, LifecycleOwner owner) {
+        Runner runner = calculateRunner(context, owner);
+//        Repository.getInstance().addTraining(
+//                context,
+//                new TrainingStatistics(
+//                        new com.example.csdeindopdracht.Database.Entity.Training(training.getDate().toString(), "0", 1),
+//                        new Statistic()
+//        ));
 
         this.training = null;
         this.trainingTimer.cancel();
         this.trainingTimer.purge();
     }
 
-    private Runner calculateRunner() {
+    private Runner calculateRunner(Context context, LifecycleOwner owner) {
         ArrayList<GpsLocation> route = this.training.getRoute();
 
         // Remove elements before the first GPS change update.
@@ -81,7 +89,9 @@ public class TrainingLogic {
             totalTime += time;
         }
         // Get player name.
-        String name = ""; // TODO get runner name from database
+        Repository.getInstance().getPlayer(context).observe(owner, runner -> {
+            this.username = runner.getName();
+        });
 
         // Calculate stamina.
         int stamina = (int) Math.min(
@@ -95,7 +105,7 @@ public class TrainingLogic {
                 (int) (MAX_SPEED / MAX_SPEED_PERCENTAGE)
         );
 
-        Runner runner = new Runner(name, stamina, speed, topSpeed);
+        Runner runner = new Runner(username, stamina, speed, topSpeed);
         Log.d(TAG, "Runner statistics: " + runner.toString());
         return runner;
     }

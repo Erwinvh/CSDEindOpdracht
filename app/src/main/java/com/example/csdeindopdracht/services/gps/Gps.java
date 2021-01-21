@@ -28,20 +28,18 @@ public class Gps implements LocationListener {
     private static final int GPS_NOTIFICATION = 1;
     private final String TAG = this.getClass().getSimpleName();
 
-    private MainViewModel mainViewModel;
     private Context context;
 
     private GpsLocation gpsLocation;
     private LocationManager locationManager;
 
-    public Gps(MainViewModel mainViewModel) {
-        this.mainViewModel = mainViewModel;
-        this.context = mainViewModel.getApplication().getApplicationContext();
-
+    public Gps(Context context) {
         this.gpsLocation = new GpsLocation(
                 null,
                 System.currentTimeMillis()
         );
+
+        this.context = context;
 
         this.locationManager = (LocationManager) this.context.getSystemService(Context.LOCATION_SERVICE);
 

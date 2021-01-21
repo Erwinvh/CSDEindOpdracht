@@ -52,6 +52,11 @@ public class Repository {
     public LiveData<RunnerStatistics> getStatistics(Context context, String name) {
         return Database.getINSTANCE(context).userAccess().getRunnerStatistics(name);
     }
+
+    public LiveData<Runner> getPlayer(Context context) {
+        return Database.getINSTANCE(context).userAccess().getPlayer();
+    }
+
     public void updateUserSettings(Context context, UserSettings userSettings){
         Thread updateThread = new Thread(() -> Database.getINSTANCE(context).adminAccess().updateUserSettings(userSettings));
         updateThread.start();
