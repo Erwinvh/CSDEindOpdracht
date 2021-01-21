@@ -91,7 +91,7 @@ public class raceFragment extends Fragment {
         this.mapView.onPause();
         this.locationOverlay.onPause();
         //TODO: forfeit race
-        mainViewModel.raceLogic.forfeitRace();
+        mainViewModel.getRaceLogic().forfeitRace();
     }
 
     @Override
@@ -166,6 +166,11 @@ public class raceFragment extends Fragment {
             endGeoPoint = CalculateEndPoint();
             DrawEndPoint(endGeoPoint);
             mainViewModel.getRaceLogic().startRace(beginGeoPoint, endGeoPoint, this);
+            mainViewModel.getUserSetting().observe(this, userSettings -> {
+                System.out.println("SettingId: " + userSettings.getSettingID());
+                System.out.println("Difficulty: " + userSettings.getDifficulty());
+                System.out.println("Language: " + userSettings.getLanguage());
+            });
 
             //TODO: remove testcode
             Toast.makeText(getActivity(), "TODO: implement sprint function",
