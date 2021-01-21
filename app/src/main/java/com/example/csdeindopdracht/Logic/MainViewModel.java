@@ -12,8 +12,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.csdeindopdracht.Database.Database;
 import com.example.csdeindopdracht.Database.Entity.Race;
+import com.example.csdeindopdracht.Database.Entity.Runner;
+import com.example.csdeindopdracht.Database.Entity.Statistic;
 import com.example.csdeindopdracht.Database.Entity.UserSettings;
 import com.example.csdeindopdracht.Database.Relations.RaceWithRunners;
+import com.example.csdeindopdracht.Database.Relations.RunnerStatistics;
 import com.example.csdeindopdracht.Database.Relations.TrainingStatistics;
 
 import java.util.List;
@@ -34,6 +37,8 @@ public class MainViewModel extends AndroidViewModel {
 
     private final MutableLiveData<RaceWithRunners> lastUncompletedRace = new MutableLiveData<>();
     private final MutableLiveData<TrainingStatistics> lastTraining = new MutableLiveData<>();
+
+    private RaceLogic raceLogic;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -62,6 +67,53 @@ public class MainViewModel extends AndroidViewModel {
             this.lastTraining.setValue(trainingStatistics.get(trainingStatistics.size()-1));
         });
         return lastTraining;
+    }
+
+    public LiveData<RunnerStatistics> getRunnerStatistics(String runnerName) {
+        return Repository.getInstance().getStatistics(getApplication().getApplicationContext(), runnerName);
+    }
+
+    public void saveTrainingStatistics(TrainingStatistics trainingStatistics) {
+        Repository.getInstance().updateTraining(getApplication().getApplicationContext(), trainingStatistics);
+    }
+
+    public void saveRunner(RunnerStatistics runnerStatistics) {
+        Repository.getInstance().updateRunnerStatistics(getApplication().getApplicationContext(), runnerStatistics);
+    }
+
+    public double getMaxSpeed() {
+        //TODO: get player maxspeed
+        return 3;
+    }
+
+    public double getSpeed() {
+        //TODO: get player speed
+        return 1;
+    }
+
+    public double getOpponentMaxSpeed() {
+        //TODO: get oppo max speed
+        return 2;
+    }
+
+    public double getOpponentSpeed() {
+        //TODO: get oppo speed
+        return 1;
+    }
+
+    public int getStamina() {
+        //TODO: get player stamina
+
+        return 4;
+    }
+
+    public int getOpponentStamina() {
+        //TODO: get opponent Stamina
+        return 3;
+    }
+
+    public void completeRace() {
+        //TODO: complete last unrun race or just leave it as is
     }
 
     public void setLanguage(LifecycleOwner owner, String language) {

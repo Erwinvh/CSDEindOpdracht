@@ -16,7 +16,7 @@ import java.util.List;
 @Dao
 public interface UserDao {
 
-    @Query("SELECT * FROM usersetting WHERE settingID LIKE 0")
+    @Query("SELECT * FROM usersetting WHERE settingID LIKE 1")
     LiveData<UserSettings> getUserSettings();
 
     @Transaction
