@@ -74,8 +74,8 @@ public class Repository {
 
     public void addTraining(Context context, TrainingStatistics training){
         Thread updateThread = new Thread(() -> {
-            Database.getINSTANCE(context).adminAccess().addTrainings(training.getTraining());
             Database.getINSTANCE(context).adminAccess().addStatistics(training.getStatistic());
+            Database.getINSTANCE(context).adminAccess().addTrainings(training.getTraining());
         });
         updateThread.start();
         try {
@@ -87,8 +87,8 @@ public class Repository {
 
     public void updateTraining(Context context, TrainingStatistics training){
         Thread updateThread = new Thread(() -> {
-            Database.getINSTANCE(context).adminAccess().updateTrainings(training.getTraining());
             Database.getINSTANCE(context).adminAccess().updateStatistics(training.getStatistic());
+            Database.getINSTANCE(context).adminAccess().updateTrainings(training.getTraining());
         });
         updateThread.start();
         try {
@@ -100,8 +100,8 @@ public class Repository {
 
     public void updateRunnerStatistics(Context context, RunnerStatistics runnerStatistics) {
         Thread updateThread = new Thread(() -> {
-            Database.getINSTANCE(context).adminAccess().updateRunners(runnerStatistics.getRunner());
             Database.getINSTANCE(context).adminAccess().updateStatistics(runnerStatistics.getStatistic());
+            Database.getINSTANCE(context).adminAccess().updateRunners(runnerStatistics.getRunner());
         });
         updateThread.start();
         try {
