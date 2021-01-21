@@ -17,4 +17,5 @@
     <string name="Readysetgo">Ready! Set! Go!</string>
     <string name="DepletedStamina">Your stamina is depleted</string>
     <string name="sprint_button">Sprint button</string>
+    <string name="ForfeitRace">Too bad! Try again later!</string>
 </resources>

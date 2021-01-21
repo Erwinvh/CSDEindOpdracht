@@ -17,4 +17,5 @@
     <string name="LoseRaceMessage">Je hebt verloren! Probeer opnieuw!</string>
     <string name="WinRaceMessage">Je hebt gewonnen! Goed gedaan!</string>
     <string name="Readysetgo">Klaar voor de start! Af!</string>
+    <string name="ForfeitRace">Jammer! geef niet op!</string>
 </resources>

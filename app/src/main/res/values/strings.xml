@@ -24,4 +24,5 @@
     <string name="Readysetgo">Ready! Set! Go!</string>
     <string name="dutch_flag">Dutch</string>
     <string name="api_response_fail">Failed to receive a response.</string>
+    <string name="ForfeitRace">Too bad! Try again later!</string>
 </resources>

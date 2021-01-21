@@ -50,6 +50,8 @@ public class raceFragment extends Fragment {
     //Info related
     private MainViewModel mainViewModel;
 
+    private boolean racestarted = false;
+
     //Race related
     private GeoPoint beginGeoPoint;
     private GeoPoint endGeoPoint;
@@ -145,28 +147,37 @@ public class raceFragment extends Fragment {
 
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
-
-        //TODO: create all 4 items on the list
-
-
         SprintButton = view.findViewById(R.id.sprint_button);
         SprintButton.setOnClickListener(v -> {
-            //TODO: fit sprint mechanic in to button
-            //raceLogic.UseSprintButton(null);
+            if(!racestarted) {
+                beginGeoPoint = new GeoPoint(locationOverlay.getMyLocation().getLatitude(), locationOverlay.getMyLocation().getLongitude());
+                playerGeoPoint = locationOverlay.getMyLocation();
+                OpponentGeoPoint = locationOverlay.getMyLocation();
+                DrawBeginPoint(beginGeoPoint);
+                Drawplayer(playerGeoPoint);
+                DrawOponent(OpponentGeoPoint);
+                endGeoPoint = CalculateEndPoint();
+                DrawEndPoint(endGeoPoint);
+                mainViewModel.getRaceLogic().startRace(beginGeoPoint, endGeoPoint, this);
 
-            beginGeoPoint = new GeoPoint(locationOverlay.getMyLocation().getLatitude(), locationOverlay.getMyLocation().getLongitude());
-            playerGeoPoint = locationOverlay.getMyLocation();
-            OpponentGeoPoint = locationOverlay.getMyLocation();
-            DrawBeginPoint(beginGeoPoint);
-            Drawplayer(playerGeoPoint);
-            DrawOponent(OpponentGeoPoint);
-            endGeoPoint = CalculateEndPoint();
-            DrawEndPoint(endGeoPoint);
-            mainViewModel.getRaceLogic().startRace(beginGeoPoint, endGeoPoint, this);
-
-            //TODO: remove testcode
-            Toast.makeText(getActivity(), R.string.Readysetgo,
-                    Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.Readysetgo,
+                        Toast.LENGTH_SHORT).show();
+                racestarted = true;
+                SprintButton.setImageResource(R.drawable.stop_foreground);
+            }else{
+                //TODO: Toast that you gave up
+                Toast.makeText(getActivity(), R.string.ForfeitRace,
+                        Toast.LENGTH_SHORT).show();
+                mainViewModel.raceLogic.forfeitRace();
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                mapView.getOverlays().clear();
+                racestarted = false;
+                SprintButton.setImageResource(R.drawable.play_foreground);
+            }
 
         });
 
