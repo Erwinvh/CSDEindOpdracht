@@ -1,18 +1,20 @@
 package com.example.csdeindopdracht.Logic;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Looper;
+import android.widget.Toast;
 
-import com.example.csdeindopdracht.Database.Entity.Runner;
-import com.example.csdeindopdracht.Database.Relations.RunnerStatistics;
+
+import com.example.csdeindopdracht.MainActivity;
+import com.example.csdeindopdracht.R;
 import com.example.csdeindopdracht.fragments.raceFragment;
 import com.example.csdeindopdracht.ors.DirectionsPost;
 
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.util.MapTileIndex;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.Random;
+
 
 public class RaceLogic {
 
@@ -24,8 +26,12 @@ public class RaceLogic {
     private MainViewModel mainViewModel;
     private raceFragment RaceFragment;
 
-    private double BaseSpeed = 0.000001;
-    private double scaleDifference = 0.00001;
+    private double BaseSpeed = 0.0000001;
+    private double scaleDifference = 0.0000001;
+    private double maxLat;
+    private double maxLong;
+    private double MinLat;
+    private double MinLong;
     //RACE Player ITEMS
     public boolean isPlayerBoosted = false;
     public int playerboostCounter = 0;
@@ -53,8 +59,8 @@ public class RaceLogic {
     public void startRace(GeoPoint begin, GeoPoint end, raceFragment fragment) {
         DirectionsPost.executeRaceRoute(context, begin, end, this);
         this.endPoint = end;
-        this.MyLocation = begin;
-        this.opponentLocation = begin;
+        this.MyLocation = begin.clone();
+        this.opponentLocation = begin.clone();
         this.RaceFragment = fragment;
 
         this.on = true;
@@ -71,19 +77,20 @@ public class RaceLogic {
             double b = opponentLocation.distanceToAsDouble(endPoint);
             double b2 = opponentLocation.distanceToAsDouble(RaceRoute.get(RaceRoute.size()-1));
 
-            if (a <= 15.0 || a2<= 15.0) {
+            if (a <= 5.0 || a2<= 5.0) {
                 CrossedFinishLine(true);
-            } else if (b <= 15.0 || b2 <= 15.0) {
+            } else if (b <= 5.0 || b2 <= 5.0) {
                 CrossedFinishLine(false);
             }
 
         }
+        resetRaceValues();
     }
 
 
     public void procedure() {
         try {
-            Thread.sleep(100);
+            Thread.sleep(10);
             CalculatePlayerPosition();
             SetOpponentBooster();
             CalculateOponentPosition();
@@ -104,9 +111,22 @@ public class RaceLogic {
                 opponentLocation.setCoords(RaceRoute.get(lastCheckPointOpponent).getLatitude(), RaceRoute.get(lastCheckPointOpponent).getLongitude());
 
             }
-        } catch (InterruptedException | NullPointerException e) {
+            OffTrailSafeGuard();
+
+        } catch (NullPointerException | InterruptedException e) {
             on = false;
         }
+    }
+
+    private void OffTrailSafeGuard() {
+        if (MinLat > MyLocation.getLatitude() || MinLat > opponentLocation.getLatitude() || MinLong > MyLocation.getLongitude() || MinLong > opponentLocation.getLongitude() || maxLat < MyLocation.getLatitude() || maxLat < opponentLocation.getLatitude() || maxLong < MyLocation.getLongitude() || maxLong < opponentLocation.getLongitude()){
+            ResetRunnersToLastCheckpoint();
+        }
+    }
+
+    private void ResetRunnersToLastCheckpoint() {
+        MyLocation = RaceRoute.get(lastCheckPointPlayer).clone();
+        opponentLocation = RaceRoute.get(lastCheckPointOpponent).clone();
     }
 
     private void SetOpponentBooster() {
@@ -123,7 +143,6 @@ public class RaceLogic {
     public void CalculatePlayerPosition() {
         double newLat = MyLocation.getLatitude();
         double newLong = MyLocation.getLongitude();
-        System.out.println("old lat: " + newLat + " angle: " + anglePlayer +"");
         //Update lat and long
         if (xFactorPlayer != 0) {
             double b = newLat - (anglePlayer * newLong);
@@ -193,7 +212,6 @@ public class RaceLogic {
         GeoPoint secondPoint = RaceRoute.get(lastCheckPoint + 1);
         double upper = firstPoint.getLatitude() - secondPoint.getLatitude();
         double lower = (firstPoint.getLongitude() - secondPoint.getLongitude());
-        System.out.println("Upper: " + upper + " Lower: " + lower);
         return (upper/lower);
     }
 
@@ -212,21 +230,27 @@ public class RaceLogic {
 
 
     public boolean checkCheckpointProgress(int lastCheckpoint, GeoPoint position) {
+        //Check logic
         GeoPoint nextCheckPoint = RaceRoute.get(lastCheckpoint + 1);
-        return nextCheckPoint.getLongitude() - position.getLongitude() < scaleDifference && nextCheckPoint.getLatitude() - position.getLatitude() < scaleDifference;
+        return Math.abs(nextCheckPoint.getLongitude() - position.getLongitude()) < scaleDifference && Math.abs(nextCheckPoint.getLatitude() - position.getLatitude()) < scaleDifference;
     }
 
     public void CrossedFinishLine(Boolean RaceResult) {
-        //TODO: finish
         endRace();
         if (RaceResult) {
-//          victory!
+            mainViewModel.activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(context, R.string.WinRaceMessage,Toast.LENGTH_SHORT).show();
+                }
+            });
           mainViewModel.completeRace();
         } else {
-//          Lose!
-//          ForfeitRace()
+            mainViewModel.activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(context, R.string.LoseRaceMessage,Toast.LENGTH_SHORT).show();
+                }
+            });
         }
-        resetRaceValues();
     }
 
     public void endRace() {
@@ -238,7 +262,11 @@ public class RaceLogic {
             isPlayerBoosted = true;
             playerBoostedAmount++;
         } else {
-            raceFragment.sendStaminaDepleted();
+            mainViewModel.activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(context, R.string.DepletedStamina,Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -268,12 +296,30 @@ public class RaceLogic {
         this.RaceFragment.DrawRoute(RaceRoute);
         GeoPoint lastroute = RaceRoute.get(RaceRoute.size()-1);
         if (lastroute.getLongitude()!= endPoint.getLongitude()||lastroute.getLatitude()!= endPoint.getLatitude()){
-            RaceFragment.DrawEndPoint(lastroute);
+            RaceFragment.setEndPointMarker(lastroute);
         }
         xFactorPlayer = CalculateXFactor(0);
         anglePlayer = CalculateAngle(0);
         xFactorOpponent = CalculateXFactor(0);
         angleOpponent = CalculateAngle(0);
+        maxLat = Double.MIN_NORMAL;
+        maxLong = Double.MIN_NORMAL;
+        MinLat = Double.MAX_VALUE;
+        MinLong = Double.MAX_VALUE;
+        for (GeoPoint point : coordinates){
+            if (maxLat < point.getLatitude()){
+                maxLat = point.getLatitude();
+            }
+            if (maxLong < point.getLongitude()){
+                maxLong = point.getLongitude();
+            }
+            if (MinLong > point.getLongitude()){
+                MinLong = point.getLongitude();
+            }
+            if (MinLat > point.getLatitude()){
+                MinLat = point.getLatitude();
+            }
+        }
 
         this.RacingThread = new Thread(this::ConstantlyCheck);
         this.RacingThread.start();

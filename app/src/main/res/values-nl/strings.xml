@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CSDEindopdracht</string>
+    <string name="character_button">Ga naar Personage</string>
+    <string name="training_button">Train jezelf</string>
+    <string name="race_button">Race tegen een bot</string>
+    <string name="character_title">Karakter</string>
+    <string name="stamina">Uithoudingsvermogen</string>
+    <string name="speed">Snelheid</string>
+    <string name="top_speed">Top snelheid</string>
+    <string name="avatar">Avatar</string>
+    <string name="dutch_flag">Nederlands</string>
+    <string name="british_flag">Engels</string>
+    <string name="sprint_button">Sprint knop</string>
+    <string name="api_response_fail">Niet gelukt om een reactie te krijgen</string>
+    <string name="DepletedStamina">je uithoudingsvermogen is op</string>
+    <string name="LoseRaceMessage">Je hebt verloren! Probeer opnieuw!</string>
+    <string name="WinRaceMessage">Je hebt gewonnen! Goed gedaan!</string>
+    <string name="Readysetgo">Klaar voor de start! Af!</string>
+</resources>

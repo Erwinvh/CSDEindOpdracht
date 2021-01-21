@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">CSDEindopdracht</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="fragment_container">Fragment container</string>
+    <string name="fragment_container" translatable="false">Fragment container</string>
     <string name="character_button">Go to character</string>
     <string name="training_button">Train yourself</string>
     <string name="race_button">Race a bot</string>
@@ -12,12 +12,16 @@
     <string name="speed">Speed</string>
     <string name="top_speed">Top speed</string>
     <string name="avatar">Avatar</string>
-    <string name="dutch_flag">Nederlands</string>
     <string name="british_flag">English</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="sprint_button">Sprint button</string>
 
     <!-- Open route service -->
+    <string name="DepletedStamina">Your stamina is depleted</string>
+    <string name="LoseRaceMessage">You lost! Try again!</string>
+    <string name="WinRaceMessage">You Win! Well done!</string>
+    <string name="Readysetgo">Ready! Set! Go!</string>
+    <string name="dutch_flag">Dutch</string>
     <string name="api_response_fail">Failed to receive a response.</string>
 </resources>

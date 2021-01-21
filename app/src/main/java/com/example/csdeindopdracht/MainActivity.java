@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.mainViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(MainViewModel.class);
         DirectionsPost.executeExample(getApplicationContext());
+        this.mainViewModel.setMainActivity(this);
 
         //left button
         toCharacterButton = findViewById(R.id.button_character);

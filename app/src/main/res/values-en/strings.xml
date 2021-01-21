@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CSDEindopdracht</string>
+    <string name="training_button">Train yourself</string>
+    <string name="race_button">Race a bot</string>
+    <string name="character_title">Character</string>
+    <string name="stamina">Stamina</string>
+    <string name="speed">Speed</string>
+    <string name="top_speed">Top speed</string>
+    <string name="avatar">Avatar</string>
+    <string name="dutch_flag">Dutch</string>
+    <string name="british_flag">English</string>
+    <string name="character_button">Go to character</string>
+    <string name="api_response_fail">Failed to receive a response.</string>
+    <string name="LoseRaceMessage">You lost! Try again!</string>
+    <string name="WinRaceMessage">You Win! Well done!</string>
+    <string name="Readysetgo">Ready! Set! Go!</string>
+    <string name="DepletedStamina">Your stamina is depleted</string>
+    <string name="sprint_button">Sprint button</string>
+</resources>

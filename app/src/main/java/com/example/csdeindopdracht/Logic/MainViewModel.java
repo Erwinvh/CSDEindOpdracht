@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.csdeindopdracht.Database.Entity.UserSettings;
 import com.example.csdeindopdracht.Database.Relations.TrainingStatistics;
+import com.example.csdeindopdracht.MainActivity;
 
 import java.util.Locale;
 
@@ -22,12 +23,17 @@ public class MainViewModel extends AndroidViewModel {
     private static final Locale LOCALE_DEFAULT = new Locale("nl");
     private final MutableLiveData<UserSettings> userSettings = new MutableLiveData<>();
     private final MutableLiveData<TrainingStatistics> Training = new MutableLiveData<>();
+    public MainActivity activity;
     //private final MutableLiveData<GpsCoordinate> gpsCoordinate = new MutableLiveData<>();
 
     public RaceLogic raceLogic;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    public void setMainActivity(MainActivity activity){
+        this.activity = activity;
     }
 
     public MutableLiveData<UserSettings> getUserSetting() {
@@ -49,12 +55,12 @@ public class MainViewModel extends AndroidViewModel {
 
     public double getSpeed() {
         //TODO: get player speed
-        return 1;
+        return 2;
     }
 
     public double getOpponentMaxSpeed() {
         //TODO: get oppo max speed
-        return 2;
+        return 0;
     }
 
     public double getOpponentSpeed() {
@@ -65,16 +71,21 @@ public class MainViewModel extends AndroidViewModel {
     public int getStamina() {
         //TODO: get player stamina
 
-        return 4;
+        return 100;
     }
 
     public int getOpponentStamina() {
         //TODO: get opponent Stamina
-        return 3;
+        return 0;
     }
 
     public void completeRace() {
         //TODO: complete last unrun race or just leave it as is
+    }
+
+    public String getCurrentOpponentImage() {
+        //TODO: get opponentImage
+        return "opponent1";
     }
 
 //    public MutableLiveData<TrainingStatistics> getTraining(){

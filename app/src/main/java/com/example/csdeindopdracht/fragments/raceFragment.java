@@ -3,6 +3,7 @@ package com.example.csdeindopdracht.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -34,6 +35,7 @@ import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -47,7 +49,6 @@ public class raceFragment extends Fragment {
 
     //Info related
     private MainViewModel mainViewModel;
-    private Context context;
 
     //Race related
     private GeoPoint beginGeoPoint;
@@ -67,10 +68,6 @@ public class raceFragment extends Fragment {
     public raceFragment(MainViewModel mainViewModel) {
         // Required empty public constructor
         this.mainViewModel = mainViewModel;
-    }
-
-    public static void sendStaminaDepleted() {
-        //TODO: add stamina depleted toast
     }
 
 
@@ -168,21 +165,17 @@ public class raceFragment extends Fragment {
             mainViewModel.getRaceLogic().startRace(beginGeoPoint, endGeoPoint, this);
 
             //TODO: remove testcode
-            Toast.makeText(getActivity(), "TODO: implement sprint function",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.Readysetgo,
+                    Toast.LENGTH_SHORT).show();
 
         });
-
-    }
-
-    public void updateRace(GeoPoint player, GeoPoint opponent) {
 
     }
 
     private GeoPoint CalculateEndPoint() {
         Random r = new Random();
         int low = 10;
-        int high = 80;
+        int high = 40;
         double resultLat = (r.nextInt(high - low) + low) / 10000.0;
         double resultLong = (r.nextInt(high - low) + low) / 10000.0;
 
@@ -246,7 +239,7 @@ public class raceFragment extends Fragment {
         EndpointMarker.setTitle("EndPoint");
         EndpointMarker.setPosition(geoPoint);
         EndpointMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-//        marker.setIcon(getResources().getDrawable(R.drawable.race_foreground, context.getTheme()));
+        EndpointMarker.setIcon(getResources().getDrawable(R.drawable.finishline_foreground, getContext().getTheme()));
         mapView.getOverlays().add(EndpointMarker);
     }
 
@@ -257,7 +250,9 @@ public class raceFragment extends Fragment {
         OpponentMarker.setTitle("Opponent");
         OpponentMarker.setPosition(geoPoint);
         OpponentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-//        marker.setIcon(getResources().getDrawable(R.drawable.forestrun, context.getTheme()));
+//        Drawable opponentimage = getResources().getDrawable(getResources().getIdentifier(mainViewModel.getCurrentOpponentImage(), "drawable",
+//              getContext().getPackageName()));
+//        OpponentMarker.setIcon(getResources().getDrawable(R.drawable.opponent1, getContext().getTheme()));
         mapView.getOverlays().add(OpponentMarker);
     }
 
@@ -268,21 +263,25 @@ public class raceFragment extends Fragment {
         PlayerMarker.setTitle("Player");
         PlayerMarker.setPosition(geoPoint);
         PlayerMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-//        marker.setIcon(getResources().getDrawable(R.drawable.opponent1, context.getTheme()));
+//        Drawable opponentimage = getResources().getDrawable(getResources().getIdentifier(mainViewModel.getCurrentOpponentImage(), "drawable",
+//                getContext().getPackageName()));
+//        PlayerMarker.setIcon(getResources().getDrawable(R.drawable.opponent1, getContext().getTheme()));
         mapView.getOverlays().add(PlayerMarker);
     }
 
     public void setPlayerMarker(GeoPoint myLocation) {
         mapView.getOverlays().remove(PlayerMarker);
-        System.out.println("Player Geo loc is: Long, " + myLocation.getLongitude() + "By Lat, " + myLocation.getLatitude());
-
-
         Drawplayer(myLocation);
     }
 
     public void setOpponentMarker(GeoPoint opponentLocation) {
         mapView.getOverlays().remove(OpponentMarker);
         DrawOponent(opponentLocation);
+    }
+
+    public void setEndPointMarker(GeoPoint EndPointLocation){
+        mapView.getOverlays().remove(EndpointMarker);
+        DrawEndPoint(EndPointLocation);
     }
 }
 
