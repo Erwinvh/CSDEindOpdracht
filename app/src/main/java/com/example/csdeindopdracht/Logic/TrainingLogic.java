@@ -4,14 +4,17 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 
 import com.example.csdeindopdracht.Database.Entity.Statistic;
+import com.example.csdeindopdracht.Database.Relations.RunnerStatistics;
 import com.example.csdeindopdracht.Database.Relations.TrainingStatistics;
 import com.example.csdeindopdracht.data.GpsLocation;
 import com.example.csdeindopdracht.data.Runner;
 import com.example.csdeindopdracht.data.Training;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,9 +22,7 @@ public class TrainingLogic {
 
     private final String TAG = this.getClass().getSimpleName();
 
-    private String username = "";
-
-    private final int MAX_STAMINA = 600; // 2 Hours in seconds. // TODO test purpose: 10 minutes
+    private final int MAX_STAMINA = 3600; // 1 Hours in seconds.
     private final double MAX_STAMINA_PERCENTAGE = (double) MAX_STAMINA / 100;
 
     private final int MAX_SPEED = 16; // average km/h
@@ -30,16 +31,27 @@ public class TrainingLogic {
     private final int MAX_TOP_SPEED = 45; // km/h at Usain Bolt top speed
     private final double MAX_TOP_SPEED_PERCENTAGE = (double) MAX_TOP_SPEED / 100;
 
-    private Training training = null;
-    private Timer trainingTimer = new Timer("Training timer");
+    private MainViewModel mainViewModel;
 
-    public boolean startNewTraining(Context context) {
+    private String username;
+    private int time;
+
+    private Training training = null;
+    private Timer trainingTimer;
+
+    public boolean startNewTraining(MainViewModel mainViewModel) {
         if (this.training != null && !this.training.isFinalised()) {
-            Log.e(TAG, "Another training is still in progress.");
+            Log.e(TAG, "Another t" + "training is still in progress.");
             return false;
         }
 
-        this.training = new Training(context);
+        this.mainViewModel = mainViewModel;
+
+        this.username = "";
+        this.time = 0;
+        this.training = new Training(mainViewModel.getApplication().getApplicationContext());
+
+        this.trainingTimer = new Timer("Training timer");
         this.trainingTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -50,17 +62,49 @@ public class TrainingLogic {
     }
 
     public void stopCurrentTraining(Context context, LifecycleOwner owner) {
+        // Get necessary information
         Runner runner = calculateRunner(context, owner);
-//        Repository.getInstance().addTraining(
-//                context,
-//                new TrainingStatistics(
-//                        new com.example.csdeindopdracht.Database.Entity.Training(training.getDate().toString(), "0", 1),
-//                        new Statistic()
-//        ));
+        com.example.csdeindopdracht.Database.Entity.Training training = getLastTraining(context, owner);
+
+        // Save statistics to database.
+        final com.example.csdeindopdracht.Database.Entity.Runner[] player = new com.example.csdeindopdracht.Database.Entity.Runner[1];
+        final Statistic[] statistic = new Statistic[1];
+
+        mainViewModel.getPlayer().observe(owner, runnerStatistics -> {
+            player[0] = runnerStatistics.getRunner();
+            statistic[0] = runnerStatistics.getStatistic();
+        });
+
+        try {
+            Repository.getInstance().updateRunnerStatistics(context, new RunnerStatistics(
+                    new com.example.csdeindopdracht.Database.Entity.Runner(
+                            player[0].getName(),
+                            player[0].getPhotoPath(),
+                            player[0].isPlayer(),
+                            player[0].isComplete(),
+                            player[0].getStatisticsID()),
+                    new Statistic(statistic[0].getId(),
+                            (double) runner.topSpeed,
+                            (double)runner.getSpeed(),
+                            (double)runner.getStamina()
+                    )
+            ));
+        } catch (NullPointerException e) {
+            Log.d(TAG, "No previous training available.");
+//            Repository.getInstance().addTraining(
+//                    context,
+//                    new TrainingStatistics(
+//                            new com.example.csdeindopdracht.Database.Entity.Training(this.training.getDate().toString(), String.valueOf(this.time), 0),
+//
+//                            new Statistic(0, (double) runner.getTopSpeed(), (double) runner.getSpeed(), (double) runner.getStamina())
+//                    )
+//            );
+        }
 
         this.training = null;
         this.trainingTimer.cancel();
         this.trainingTimer.purge();
+        this.trainingTimer = null;
     }
 
     private Runner calculateRunner(Context context, LifecycleOwner owner) {
@@ -69,17 +113,21 @@ public class TrainingLogic {
         // Remove elements before the first GPS change update.
         route.removeIf(item -> item.getLocation() == null);
 
+        // TODO get previous statistics.
+        if (route.size() <= 1) {
+            return new Runner("Player", 10, 10, 10);
+        }
 
         // Calculate average speed AND top speed.
         int totalDistance = 0;
         int totalTime = 0;
         int topSpeed = 0;
         for (int i = 0; i < route.size() - 1; i++) {
-            int distance = (int) (route.get(i).getLocation().distanceToAsDouble(route.get(i+1).getLocation()) * 100);
-            int time = (int) ((route.get(i+1).getTimestamp() - route.get(i).getTimestamp()));
+            int distance = (int) (route.get(i).getLocation().distanceToAsDouble(route.get(i + 1).getLocation()) * 100);
+            int time = (int) ((route.get(i + 1).getTimestamp() - route.get(i).getTimestamp()));
 
             // Top speed.
-            int speed = (int) (((double) distance / 100 / 1000) / ((double)time / 3600 / 1000) / MAX_SPEED_PERCENTAGE);
+            int speed = (int) (((double) distance / 100 / 1000) / ((double) time / 3600 / 1000) / MAX_SPEED_PERCENTAGE);
             if (topSpeed < speed) {
                 topSpeed = (int) Math.min(speed / MAX_TOP_SPEED_PERCENTAGE, MAX_TOP_SPEED);
             }
@@ -92,6 +140,9 @@ public class TrainingLogic {
         Repository.getInstance().getPlayer(context).observe(owner, runner -> {
             this.username = runner.getName();
         });
+
+        // Initialise time.
+        this.time = totalTime / 1000;
 
         // Calculate stamina.
         int stamina = (int) Math.min(
@@ -106,7 +157,19 @@ public class TrainingLogic {
         );
 
         Runner runner = new Runner(username, stamina, speed, topSpeed);
+        this.training.finaliseTraining(runner);
         Log.d(TAG, "Runner statistics: " + runner.toString());
         return runner;
+    }
+
+    public com.example.csdeindopdracht.Database.Entity.Training getLastTraining(Context context, LifecycleOwner owner) {
+        final com.example.csdeindopdracht.Database.Entity.Training[] training = new com.example.csdeindopdracht.Database.Entity.Training[1];
+
+        LiveData<List<TrainingStatistics>> trainings = Repository.getInstance().getTrainings(context);
+        trainings.observe(owner, trainingStatistics -> {
+            training[0] = trainingStatistics.get(trainingStatistics.size() - 1).getTraining();
+        });
+
+        return training[0];
     }
 }

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             if (!currentFragment.equals(Fragments.CHARACTER)) {
                 //TODO: register previous fragment?
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentcontainer, new CharacterFragment())
+                        .replace(R.id.fragmentcontainer, new CharacterFragment(mainViewModel))
                         .commit();
                 currentFragment = Fragments.CHARACTER;
                 resetButtons();

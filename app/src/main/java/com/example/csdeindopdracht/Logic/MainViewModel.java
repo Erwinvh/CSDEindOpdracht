@@ -48,7 +48,7 @@ public class MainViewModel extends AndroidViewModel {
         if (trainingLogic == null) {
             trainingLogic = new TrainingLogic();
         }
-        trainingLogic.startNewTraining(getApplication().getApplicationContext());
+        trainingLogic.startNewTraining(this);
     }
 
 
@@ -154,6 +154,10 @@ public class MainViewModel extends AndroidViewModel {
 
     private void updateUserSetting() {
         this.userSettings = Repository.getInstance().getUserSetting(getApplication().getApplicationContext());
+    }
+
+    public LiveData<RunnerStatistics> getPlayer() {
+        return Repository.getInstance().getStatistics(getApplication().getApplicationContext(), "player");
     }
 
     //todo This is most likely not possible to place here. What will most likely needs to be done if for the ui/logic which needs it to get the settings and pull the difficulty itself.

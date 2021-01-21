@@ -51,7 +51,6 @@ public class trainingFragment extends Fragment {
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -109,6 +108,7 @@ public class trainingFragment extends Fragment {
 
     final static int GLOBE_WIDTH = 256; // a constant in Google's map projection
     final static int ZOOM_MAX = 21;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
@@ -130,18 +130,10 @@ public class trainingFragment extends Fragment {
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
 
-
-
     }
 
     public MyLocationNewOverlay getLocationOverlay() {
         return locationOverlay;
-    }
-
-    public void StopChecking(){
-//        if(gpsLogic != null){
-//            gpsLogic.stop();
-//        }
     }
 
 }

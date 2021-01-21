@@ -34,8 +34,6 @@ public class Training {
 
     public void finaliseTraining(Runner runner) {
         this.runner = runner;
-        // TODO add training to database. (optional)
-        // TODO add runner to database.
     }
 
     public ArrayList<GpsLocation> getRoute() {
